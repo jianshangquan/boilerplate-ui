@@ -1,5 +1,5 @@
 import '../../style.css'
-
+import React from 'react';
 
 interface BoilerplateButtonProps extends React.HTMLAttributes<HTMLButtonElement>{
   disabled: boolean,

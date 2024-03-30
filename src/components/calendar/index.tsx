@@ -1,5 +1,6 @@
 import '../../style.css'
 
+import React from 'react';
 import { Left, DoubleLeft, Right, DoubleRight } from '@icon-park/react';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';

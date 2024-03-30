@@ -1,5 +1,6 @@
 import '../../style.css'
 
+import React from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { Check } from '@icon-park/react';

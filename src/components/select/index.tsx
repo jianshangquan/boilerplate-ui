@@ -1,5 +1,5 @@
 import '../../style.css'
-
+import React from 'react';
 
 interface BoilerplateSelectProps extends React.HTMLAttributes<HTMLSelectElement>{
     value: any
