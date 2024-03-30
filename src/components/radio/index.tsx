@@ -1,0 +1,106 @@
+import React from 'react';
+import { useContext, createContext, cloneElement } from 'react';
+import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+
+
+const RadioContext = createContext<{
+    index: number, 
+    value: any | null,
+    set: (index: number, value: any) => void
+}>({ index: 0, value: null, set(){} });
+
+
+
+
+
+export interface BoilerplateRadioProps<T>{
+    children: any,
+    className: string,
+    onChanged: (index: number, value: T) => void,
+    label: null | string,
+    value: number,
+    appearance: {
+        label: BoilerplateAppearance | undefined,
+        container: BoilerplateAppearance,
+    } | null
+}
+
+
+
+export interface BoilerplateRadioOptionProps<T>{
+    children: any,
+    className: string,
+    onChanged: (index: number, value: T) => void,
+    index: number,
+    label: null | string,
+    value: number,
+    disabled: boolean,
+    appearance: {
+        outerRadio: BoilerplateAppearance,
+        innerRadio: BoilerplateAppearance,
+        label: BoilerplateAppearance,
+    }
+}
+
+
+
+
+
+
+
+
+
+export function Radio<T>({ children, className, appearance, onChanged, label = null, value = 0 } : BoilerplateRadioProps<T>) {
+    
+    const func = {
+        set(index: number, value: any) {
+            onChanged && onChanged(index, value);
+        }
+    }
+
+    return (
+        <div className="flex flex-col gap-2">
+            {label && <div className={appearance?.label?.className || ''}>{label}</div>}
+            <RadioContext.Provider value={{ ...func, index: 0, value }}>
+                <div className={`flex ${className || appearance?.container.className}`}>
+                    {(() => {
+                        if (children == null) return null;
+
+                        if (Array.isArray(children)) {
+                            return children.map((c, i) => {
+                                if (c.type === RadioOption) {
+                                    return cloneElement(c, { index: i, key: i });
+                                }
+                                throw new Error('Only RadioOption element allow in Radio Element')
+                            })
+                        }
+
+                        return cloneElement(children, { index: 0, key: 0, });
+                    })()}
+                </div>
+            </RadioContext.Provider>
+        </div>
+    )
+}
+
+
+export function RadioOption<T>({ label, value, index, disabled = false, appearance, className, children } : BoilerplateRadioOptionProps<T>) {
+
+    const context = useContext(RadioContext);
+
+
+    const onSelect = (index: number, value: any) => {
+        (!disabled && index != context.index) && context.set(index, value || label);
+    }
+ 
+    return (
+        <div className={`inline-flex items-center gap-2 ${disabled ? 'grayscale opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onSelect(index, value)}>
+            <div className={`rounded-full border-[0.13rem] ${appearance.outerRadio} border-blue-600 p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`}>
+                <div className={`rounded-full ${appearance.innerRadio} w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`}></div>
+            </div>
+            {
+                label ? <div className={`font-light text-[0.9rem] ${className || appearance.label}`}>{label}</div> : children
+            }
+        </div>
+    )
+}

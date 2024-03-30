@@ -1,20 +1,58 @@
 import '../../style.css'
 
-import React from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 import { useEffect, useRef, useState } from "react";
 import { PreviewOpen, PreviewCloseOne } from '@icon-park/react';
+import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 
 
 export interface BoilerplateInputProp extends React.HTMLAttributes<HTMLInputElement>{
   value: any,
-  type: 'text' | 'number' | 'password',
+  type: HTMLInputTypeAttribute,
   placeholder: string,
   min: number | undefined,
   max: number | undefined,
   maxLength: number | undefined,
   onShowPreview: ((value: any) => string) | null,
-  errorMessage: string | null
+  errorMessage: string | null,
+  appearance: BoilerplateInputAppearance | null
 }
+
+
+
+
+
+
+
+export interface BoilerplateInputAppearance{
+    input: BoilerplateAppearance,
+    placeholder: BoilerplateAppearance,
+    message: BoilerplateAppearance,
+    preview: BoilerplateAppearance
+}
+
+
+
+
+export const DefaultInputAppearance: BoilerplateInputAppearance = {
+    input: {
+        className: '',
+        style: undefined,
+    },
+    placeholder: {
+        className: '',
+        style: undefined,
+    },
+    message: {
+        className: 'text-red-600',
+        style: undefined,
+    },
+    preview: {
+        className: '',
+        style: undefined
+    }
+}
+
 
 
 export function Input({
@@ -28,7 +66,8 @@ export function Input({
     max = undefined,
     maxLength = undefined,
     onShowPreview = null,
-    errorMessage = null
+    errorMessage = null,
+    appearance = DefaultInputAppearance
 } : BoilerplateInputProp) {
 
     const isNotEmpty = value?.length != 0 || value == null;
@@ -64,7 +103,7 @@ export function Input({
                     setFocused(true)
                     input.current?.select();
                 }}>
-                <div className={`absolute ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[50%] translate-y-[-50%] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`}>{placeholder}</div>
+                <div className={`absolute ${appearance?.placeholder.className} ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[50%] translate-y-[-50%] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`}>{placeholder}</div>
                 <div className="px-2 flex items-center">
                     <input
                         ref={input}
@@ -74,7 +113,7 @@ export function Input({
                         maxLength={maxLength}
                         value={value}
                         onChange={onChange}
-                        className="pb-2 pt-3 outline-none rounded-lg w-full bg-transparent"
+                        className={`pb-2 pt-3 outline-none rounded-lg w-full bg-transparent ${appearance?.input.className}`}
                     />
                     {type == 'password' && <div onClick={() => setInputType(t => t == 'password' ? 'text' : type)} className={`cursor-pointer transition-all duration-300 ${focused ? 'opacity-100' : 'opacity-0'}`}>
                         {
@@ -83,8 +122,8 @@ export function Input({
                     </div>}
                 </div>
             </div>
-            {!!errorMessage && <div className="text-[0.8rem] text-red-600">{errorMessage}</div>}
-            <div>{!!onShowPreview && onShowPreview(value)}</div>
+            {!!errorMessage && <div className={`text-[0.8rem] ${appearance?.message.className}`}>{errorMessage}</div>}
+            <div className={appearance?.preview.className || ''}>{!!onShowPreview && onShowPreview(value)}</div>
         </div>
     )
 }

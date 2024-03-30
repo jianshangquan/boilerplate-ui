@@ -1,11 +1,12 @@
 {
-  "name": "boilerplate-ui",
-  "version": "0.0.0",
+  "name": "boilerplate-ui-initial",
+  "version": "2.0.0",
   "description": "",
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs",
+    "build": "rollup -c --bundleConfigAsCjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepublishOnly": "npm run build"
   },
   "license": "MIT",
   "type": "module",

@@ -1,4 +1,4 @@
-# `react-mui-event-calendar`
+# `boilerplate-ui`
 
 # Preview
 

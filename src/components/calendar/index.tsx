@@ -7,6 +7,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import moment from 'moment';
 import { Option } from './../select';
 import shortid from 'shortid';
+import { BoilerplateAppearance } from '../../types/appearance';
 
 export const CalendarInputTimeFormat = Object.freeze({
     TwentyFourHour: '24',
@@ -30,7 +31,24 @@ export const DEFAULT_MAX_DATE = '9999-12-30';
 
 
 
-export interface BolierplateCalenterProps{
+export interface CalendarAppearance {
+    day: BoilerplateAppearance,
+    month: BoilerplateAppearance,
+    modal: BoilerplateAppearance,
+    controlButton: BoilerplateAppearance,
+    weekday: BoilerplateAppearance,
+    todayButton: BoilerplateAppearance,
+    currentTimeButton: BoilerplateAppearance
+}
+
+export interface TimeAppearance {
+    hour: BoilerplateAppearance,
+    minute: BoilerplateAppearance,
+    second: BoilerplateAppearance,
+    A: BoilerplateAppearance
+}
+
+export interface BolierplateCalenterProps {
     value: any | null | undefined,
     autoCloseOnSelect: boolean,
     onChange: (selected: string, formatted: string) => void
@@ -39,18 +57,22 @@ export interface BolierplateCalenterProps{
     modalAlign: 'center' | 'left' | 'right',
     includeTime: boolean,
     timeFormat: '24' | '12',
-    className: string | null
+    className: string | null,
+    appearance: {
+        calendar: CalendarAppearance | undefined,
+        time: TimeAppearance | undefined
+    }
 }
 
 
 
-export function CalendarInput({ value, autoCloseOnSelect = true, onChange, min = DEFAULT_MIN_DATE, max = '9999-05-15', modalAlign = CalendarInputModelAlign.LEFT, includeTime = false, timeFormat = CalendarInputTimeFormat.TwelveHour, className = '' } : BolierplateCalenterProps) {
+export function CalendarInput({ value, autoCloseOnSelect = true, onChange, appearance, min = DEFAULT_MIN_DATE, max = '9999-05-15', modalAlign = CalendarInputModelAlign.LEFT, includeTime = false, timeFormat = CalendarInputTimeFormat.TwelveHour, className = '' }: BolierplateCalenterProps) {
 
     const ref: React.MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement | null>(null);
     const inputDiv = useRef<HTMLDivElement | undefined>();
     const id = useRef(shortid());
     const [show, setShow] = useState(false);
-    const [modalPosition, setModalPosition] = useState({ scale: 1, top: '0px'});
+    const [modalPosition, setModalPosition] = useState({ scale: 1, top: '0px' });
     const format = includeTime ? timeFormat == CalendarInputTimeFormat.TwelveHour ? DATETIME12_FORMAT : DATETIME24_FORMAT : DATE_FORMAT;
 
 
@@ -110,7 +132,7 @@ export function CalendarInput({ value, autoCloseOnSelect = true, onChange, min =
                                         tabIndex={1}
                                         className={`${align} z-[50] w-max h-max fixed outline-none select-none will-change-transform rounded-xl overflow-hidden shadow-black/10 shadow-xl`}
                                     >
-                                        <CalendarPickForm id={id.current} onChange={(selected) => {
+                                        <CalendarPickForm id={id.current} appearance={appearance.calendar} onChange={(selected) => {
                                             if (autoCloseOnSelect) setShow(false);
                                             onChange && onChange(selected, selected.format(format));
                                         }} value={value} min={min} max={max} includeTime={includeTime} timeFormat={timeFormat} />
@@ -134,7 +156,7 @@ export function CalendarInput({ value, autoCloseOnSelect = true, onChange, min =
 
 
 
-export interface BoilerplateCalendarPickFormProps{
+export interface BoilerplateCalendarPickFormProps {
     value: any,
     id: string,
     onChange: (data: any) => void,
@@ -142,6 +164,7 @@ export interface BoilerplateCalendarPickFormProps{
     max: string,
     includeTime: boolean,
     timeFormat: '24' | '12',
+    appearance: CalendarAppearance | undefined
 }
 
 
@@ -149,10 +172,10 @@ export interface BoilerplateCalendarPickFormProps{
 
 
 
-function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeFormat } : BoilerplateCalendarPickFormProps) {
+function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearance, timeFormat }: BoilerplateCalendarPickFormProps) {
 
 
-    
+
     const format = includeTime ? timeFormat == CalendarInputTimeFormat.TwelveHour ? DATETIME12_FORMAT : DATETIME24_FORMAT : DATE_FORMAT;
     const valueInMoment = moment(value, format);
     const isTwelveHour = timeFormat == CalendarInputTimeFormat.TwelveHour;
@@ -300,24 +323,24 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeForm
 
     return (
         <LayoutGroup key={id}>
-            <div key={'calendar-page'} className="aspect-square w-[20rem] flex flex-col gap-3 bg-white dark:bg-stone-700 p-3 z-50">
+            <div key={'calendar-page'} className={`aspect-square w-[20rem] flex flex-col gap-3 p-3 z-50 ${appearance?.modal.className}`}>
                 <div className="flex items-center justify-between">
                     <div className='flex items-center gap-2'>
                         <div className="font-bold text-[1.4rem]">{calculatedData.current.currentDate.format('MMM').toUpperCase()}</div>
                         <div className='font-bold text-[1.4rem]'>{calculatedData.current.year}</div>
                     </div>
                     <div className='flex gap-2'>
-                        <button className='border border-black dark:border-white rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed' disabled={!calculatedData.canPrevYear} onClick={prevYear}><DoubleLeft theme="outline" size="20" /></button>
-                        <button className='border border-black dark:border-white rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed' disabled={!calculatedData.canPrev} onClick={prevMonth}><Left theme="outline" size="20" /></button>
-                        <button className='border border-black dark:border-white rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed' disabled={!calculatedData.canNext} onClick={nextMonth}><Right theme="outline" size="20" /></button>
-                        <button className='border border-black dark:border-white rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed' disabled={!calculatedData.canNextYear} onClick={nextYear}><DoubleRight theme="outline" size="20" /></button>
+                        <button className={`${appearance?.controlButton.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canPrevYear} onClick={prevYear}><DoubleLeft theme="outline" size="20" /></button>
+                        <button className={`${appearance?.controlButton.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canPrev} onClick={prevMonth}><Left theme="outline" size="20" /></button>
+                        <button className={`${appearance?.controlButton.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canNext} onClick={nextMonth}><Right theme="outline" size="20" /></button>
+                        <button className={`${appearance?.controlButton.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canNextYear} onClick={nextYear}><DoubleRight theme="outline" size="20" /></button>
                     </div>
                 </div>
                 <div className="grid grid-cols-7 w-full gap-1">
                     {
                         ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'].map((day, index) => {
                             return (
-                                <div key={day} className={`font-bold text-[0.8rem] flex items-center justify-center ${day == 'SAT' || day == 'SUN' ? 'text-red-500' : ''}`}>{day}</div>
+                                <div key={day} className={`${appearance?.weekday.className} font-bold text-[0.8rem] flex items-center justify-center ${day == 'SAT' || day == 'SUN' ? 'text-red-500' : ''}`}>{day}</div>
                             )
                         })
                     }
@@ -333,7 +356,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeForm
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
 
                                 days.push(
-                                    <button key={`${i}-${calculatedData.prev.month}-${calculatedData.prev.year}`} disabled={!isBetweenDate} className={`cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.prev.month}-${calculatedData.prev.year}`} disabled={!isBetweenDate} className={`${appearance?.day.className} cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
                                         {day}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -347,7 +370,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeForm
                                 const isSelectedDate = isSelected(formattedDate);
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
                                 days.push(
-                                    <button key={`${i}-${calculatedData.current.month}-${calculatedData.current.year}`} disabled={!isBetweenDate} className={`cursor-pointer relative flex items-center justify-center w-full disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.current.month}-${calculatedData.current.year}`} disabled={!isBetweenDate} className={`${appearance?.day.className} cursor-pointer relative flex items-center justify-center w-full disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
                                         {i}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -363,7 +386,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeForm
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
 
                                 days.push(
-                                    <button key={`${i}-${calculatedData.next.month}-${calculatedData.next.year}`} disabled={!isBetweenDate} className={`cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.next.month}-${calculatedData.next.year}`} disabled={!isBetweenDate} className={`${appearance?.day.className} cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
                                         {i}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -375,8 +398,8 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, timeForm
                 </div>
                 <div className='flex items-center justify-between w-full overflow-hidden'>
                     <div className='flex gap-2'>
-                        <div onClick={toToday} className="bg-primary text-white bg-red-600 w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]">Today</div>
-                        {includeTime && <div onClick={toCurrent} className="bg-primary text-white bg-red-600 w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]">Current</div>}
+                        <div onClick={toToday} className={`${appearance?.todayButton.className || 'text-white bg-red-600'} bg-primary w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`}>Today</div>
+                        {includeTime && <div onClick={toCurrent} className={`${appearance?.todayButton.className || 'text-white bg-red-600'} bg-primary w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`}>Current</div>}
                         <div onClick={() => setView(value)} className="border w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]">Selected date</div>
                     </div>
                 </div>

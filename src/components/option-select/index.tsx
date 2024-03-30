@@ -5,6 +5,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { Check } from '@icon-park/react';
 import shortid from 'shortid';
+import { BoilerplateAppearance } from '../../types/appearance';
 
 
 export const OptionModelAlign = Object.freeze({
@@ -25,8 +26,19 @@ export interface BoilerplateOptionSelectProps {
     autoCloseOnSelectAllType: boolean,
     className: string | undefined,
     modalAlign: 'center' | 'left' | 'right',
-    placeholder: string
+    placeholder: string,
+    apperance?: {
+        outerContainer: BoilerplateAppearance,
+        modal: BoilerplateAppearance,
+        inputContainer: BoilerplateAppearance,
+        label: BoilerplateAppearance,
+        placeholder: BoilerplateAppearance
+    }
 }
+
+
+
+
 
 
 
@@ -40,7 +52,8 @@ export function OptionSelect({
     autoCloseOnSelectAllType = true,
     className,
     modalAlign = OptionModelAlign.CENTER,
-    placeholder = ' '
+    placeholder = ' ',
+    apperance
 } : BoilerplateOptionSelectProps) {
 
     const id = useRef<string>(shortid());
@@ -59,11 +72,11 @@ export function OptionSelect({
 
 
     return (
-        <div className={`relative ${className}`}>
+        <div className={`relative ${apperance?.outerContainer.className || className}`}>
             <AnimatePresence>
-                { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className=' w-full h-full fixed top-0 left-0 z-50'></motion.div>}
+                { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`${apperance?.placeholder.className} w-full h-full fixed top-0 left-0 z-50`}></motion.div>}
             </AnimatePresence>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={`border rounded-md max-h-[10rem] cursor-pointer p-1`}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={`${apperance?.inputContainer.className} border rounded-md max-h-[10rem] cursor-pointer p-1`}>
                 <LayoutGroup id={id.current}>
                     <AnimatePresence>
                         {
@@ -74,12 +87,12 @@ export function OptionSelect({
                         {
                             multiples ? (items.filter(item => selectedItem.includes(item.value))).map((item, index) => {
                                 return (
-                                    <motion.span layoutId={item.value} key={item.value} className='py-[0.1rem] px-2 bg-primary/40 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block'>{item.label}</motion.span>
+                                    <motion.span layoutId={item.value} key={item.value} className={`py-[0.1rem] px-2 ${apperance?.label.className || ' bg-primary/40 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item.label}</motion.span>
                                 )
                             }) : selectedItem != null ? 
                                 (() => {
                                     const item = items.find(i => i.value == selectedItem);
-                                    return <motion.span key={item.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className='py-[0.1rem] px-2 bg-primary/40 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block'>{item?.label}</motion.span>;
+                                    return <motion.span key={item.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={`py-[0.1rem] px-2 ${apperance?.label.className || 'bg-primary/40 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item?.label}</motion.span>
                                 })() :
                                 null
                         }
@@ -108,7 +121,7 @@ export function OptionSelect({
                                     maxHeight: `${isOverHalf ? topMaxHeight : bottomMaxHeight}px`
                                 }
                             })()}
-                            className={`bg-white dark:bg-stone-600 fixed ${(() => {;
+                            className={`${apperance?.modal.className || 'bg-white dark:bg-stone-600'} fixed ${(() => {;
                                 const isOverHalf = bound.top > window.innerHeight / 2;
                                 if(modalAlign == OptionModelAlign.CENTER)
                                     return isOverHalf ? 'origin-bottom' : 'origin-top';
