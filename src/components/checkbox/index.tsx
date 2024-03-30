@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import { CheckSmall } from '@icon-park/react'
 import { BoilerplateAppearance } from '../../types/appearance';
+import './../../style.css'
 
 
 
