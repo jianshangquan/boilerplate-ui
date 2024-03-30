@@ -5,7 +5,7 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import { Check } from '@icon-park/react';
 import shortid from 'shortid';
-import { BoilerplateAppearance } from '../../types/appearance';
+import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 
 
 export const OptionModelAlign = Object.freeze({
@@ -16,17 +16,18 @@ export const OptionModelAlign = Object.freeze({
 
 
 
+
 export interface BoilerplateOptionSelectProps {
-    items: any[],
-    selectedItem: any[],
+    items: {label: any, value: any, disabled?: boolean}[],
+    selectedItem: any[] | any,
     setSelectedItem: (value: any) => void,
-    showAllTypes: boolean,
-    multiples: boolean,
-    autoCloseOnSelect: boolean,
-    autoCloseOnSelectAllType: boolean,
-    className: string | undefined,
-    modalAlign: 'center' | 'left' | 'right',
-    placeholder: string,
+    showAllTypes?: boolean,
+    multiples?: boolean,
+    autoCloseOnSelect?: boolean,
+    autoCloseOnSelectAllType?: boolean,
+    className?: ClassName,
+    modalAlign?: 'center' | 'left' | 'right',
+    placeholder?: string,
     apperance?: {
         outerContainer: BoilerplateAppearance,
         modal: BoilerplateAppearance,
@@ -35,6 +36,8 @@ export interface BoilerplateOptionSelectProps {
         placeholder: BoilerplateAppearance
     }
 }
+
+
 
 
 
@@ -87,12 +90,12 @@ export function OptionSelect({
                         {
                             multiples ? (items.filter(item => selectedItem.includes(item.value))).map((item, index) => {
                                 return (
-                                    <motion.span layoutId={item.value} key={item.value} className={`py-[0.1rem] px-2 ${apperance?.label.className || ' bg-primary/40 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item.label}</motion.span>
+                                    <motion.span layoutId={item.value} key={item.value} className={`py-[0.1rem] px-2 ${apperance?.label.className || ' bg-primary/20 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item.label}</motion.span>
                                 )
                             }) : selectedItem != null ? 
                                 (() => {
                                     const item = items.find(i => i.value == selectedItem);
-                                    return <motion.span key={item.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={`py-[0.1rem] px-2 ${apperance?.label.className || 'bg-primary/40 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item?.label}</motion.span>
+                                    return <motion.span key={item?.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={`py-[0.1rem] px-2 ${apperance?.label.className || 'bg-primary/20 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item?.label}</motion.span>
                                 })() :
                                 null
                         }
@@ -133,7 +136,7 @@ export function OptionSelect({
                             tabIndex={1}>
                             {
                                 (showAllTypes && multiples) && (
-                                    <div className='flex gap-2 items-center hover:bg-gray-100 dark:hover:bg-stone-700 justify-between rounded-lg py-1 px-1 cursor-pointer' onClick={() => {
+                                    <div className='flex gap-2 items-center hover:bg-primary/10 dark:hover:bg-primary/20 justify-between rounded-lg py-1 px-1 cursor-pointer' onClick={() => {
                                         if(selectedItem.length == items.filter(i => i.disabled != true).length){
                                             setSelectedItem([]);
                                         }else{
@@ -151,14 +154,14 @@ export function OptionSelect({
                             {
                                 items.map((item, index) => {
                                     const disabled = item.disabled;
-                                    const isExist = multiples ? selectedItem.filter(i => i == item.value).length != 0 : item.value == selectedItem;
+                                    const isExist = multiples ? (selectedItem as any[]).filter(i => i == item.value).length != 0 : item.value == selectedItem;
                                     
                                     return (
-                                        <div key={item.value} className={`flex gap-2 items-center hover:bg-gray-100 dark:hover:bg-stone-700 rounded-lg justify-between py-1 px-2  ${disabled ? 'opacity-65 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => {
+                                        <div key={item.value} className={`flex gap-2 items-center transition-all duration-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg justify-between py-1 px-2  ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => {
                                             if(disabled) return;
                                             if (multiples) {
                                                 if(selectedItem.includes(item.value)){
-                                                    setSelectedItem(selectedItem.filter(i => i != item.value))
+                                                    setSelectedItem((selectedItem as any[]).filter(i => i != item.value))
                                                 }else{
                                                     setSelectedItem([...selectedItem, item.value])
                                                 }

@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { ClassName } from '../../types/appearance';
 
 
-export default function CircularProgress({ size = 20, strokeWidth = 3, pathLength = 100, progress=50, className="stroke-black dark:stroke-white", isProcessing = false }) {
+
+
+export interface BoilerplateCircularProgressProps{
+    size?: number,
+    strokeWidth?: number,
+    pathLength?: number,
+    progress: number,
+    className?: ClassName,
+    isProcessing?: boolean
+}
+
+
+export function CircularProgress({ size = 20, strokeWidth = 3, pathLength = 100, progress=50, className="stroke-black dark:stroke-white", isProcessing = false } : BoilerplateCircularProgressProps) {
     // https://medium.com/@pppped/how-to-code-a-responsive-circular-percentage-chart-with-svg-and-css-3632f8cd7705
 
     const [percentage, setPercentage] = useState(progress);
@@ -30,7 +43,7 @@ export default function CircularProgress({ size = 20, strokeWidth = 3, pathLengt
                 // stroke="white"
                 strokeWidth={strokeWidth}
                 fill="transparent"
-                className={`${className}`}
+                className={`${className} stroke-primary`}
                 style={{
                     strokeLinecap: 'round',
                     strokeDasharray: isInProcessing ? `25 25 25 25` : `${percentage} ${pathLength}`,

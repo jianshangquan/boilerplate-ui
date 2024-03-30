@@ -1,6 +1,8 @@
 import React from 'react';
 import { useContext, createContext, cloneElement } from 'react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+import './../../style.css'
+
 
 
 const RadioContext = createContext<{
@@ -14,31 +16,31 @@ const RadioContext = createContext<{
 
 
 export interface BoilerplateRadioProps<T>{
-    children: any,
-    className: string,
-    onChanged: (index: number, value: T) => void,
-    label: null | string,
-    value: number,
-    appearance: {
-        label: BoilerplateAppearance | undefined,
-        container: BoilerplateAppearance,
+    children?: any,
+    className?: string,
+    onChanged?: (index: number, value: T) => void,
+    label?: null | string,
+    value?: T,
+    appearance?: {
+        label?: BoilerplateAppearance | undefined,
+        container?: BoilerplateAppearance,
     } | null
 }
 
 
 
 export interface BoilerplateRadioOptionProps<T>{
-    children: any,
-    className: string,
-    onChanged: (index: number, value: T) => void,
-    index: number,
-    label: null | string,
-    value: number,
-    disabled: boolean,
-    appearance: {
-        outerRadio: BoilerplateAppearance,
-        innerRadio: BoilerplateAppearance,
-        label: BoilerplateAppearance,
+    children?: any,
+    className?: string,
+    onChanged?: (index: number, value: T) => void,
+    index?: number,
+    label?: null | string,
+    value: T,
+    disabled?: boolean,
+    appearance?: {
+        outerRadio?: BoilerplateAppearance,
+        innerRadio?: BoilerplateAppearance,
+        label?: BoilerplateAppearance,
     }
 }
 
@@ -50,10 +52,11 @@ export interface BoilerplateRadioOptionProps<T>{
 
 
 
-export function Radio<T>({ children, className, appearance, onChanged, label = null, value = 0 } : BoilerplateRadioProps<T>) {
+export function Radio<T>({ children, className, appearance, onChanged, label = null, value } : BoilerplateRadioProps<T>) {
     
     const func = {
         set(index: number, value: any) {
+            console.log(index, value);
             onChanged && onChanged(index, value);
         }
     }
@@ -62,7 +65,7 @@ export function Radio<T>({ children, className, appearance, onChanged, label = n
         <div className="flex flex-col gap-2">
             {label && <div className={appearance?.label?.className || ''}>{label}</div>}
             <RadioContext.Provider value={{ ...func, index: 0, value }}>
-                <div className={`flex ${className || appearance?.container.className}`}>
+                <div className={`flex ${className || appearance?.container?.className}`}>
                     {(() => {
                         if (children == null) return null;
 
@@ -90,16 +93,16 @@ export function RadioOption<T>({ label, value, index, disabled = false, appearan
 
 
     const onSelect = (index: number, value: any) => {
-        (!disabled && index != context.index) && context.set(index, value || label);
+        (!disabled && value != context.value) && context.set(index, value || label);
     }
  
     return (
-        <div className={`inline-flex items-center gap-2 ${disabled ? 'grayscale opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onSelect(index, value)}>
-            <div className={`rounded-full border-[0.13rem] ${appearance.outerRadio} border-blue-600 p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`}>
-                <div className={`rounded-full ${appearance.innerRadio} w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`}></div>
+        <div className={`inline-flex items-center gap-2 ${disabled ? 'grayscale opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onSelect(index!, value)}>
+            <div className={`rounded-full border-[0.13rem] ${appearance?.outerRadio} border-primary p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`}>
+                <div className={`rounded-full ${appearance?.innerRadio || 'bg-primary'} w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`}></div>
             </div>
             {
-                label ? <div className={`font-light text-[0.9rem] ${className || appearance.label}`}>{label}</div> : children
+                label ? <div className={`font-light text-[0.9rem] ${className || appearance?.label}`}>{label}</div> : children
             }
         </div>
     )

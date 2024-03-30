@@ -4,18 +4,21 @@ import React, { HTMLInputTypeAttribute } from 'react';
 import { useEffect, useRef, useState } from "react";
 import { PreviewOpen, PreviewCloseOne } from '@icon-park/react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+import { twMerge } from 'tailwind-merge'
 
 
-export interface BoilerplateInputProp extends React.HTMLAttributes<HTMLInputElement>{
-  value: any,
-  type: HTMLInputTypeAttribute,
-  placeholder: string,
-  min: number | undefined,
-  max: number | undefined,
-  maxLength: number | undefined,
-  onShowPreview: ((value: any) => string) | null,
-  errorMessage: string | null,
-  appearance: BoilerplateInputAppearance | null
+export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputElement>{
+  value?: any,
+  type?: HTMLInputTypeAttribute,
+  placeholder?: string,
+  min?: number,
+  max?: number,
+  maxLength?: number,
+  onShowPreview?: ((value: any) => string) | null,
+  errorMessage?: string,
+  autoFocus?: boolean,
+  className?: string,
+  appearance?: BoilerplateInputAppearance | null
 }
 
 
@@ -62,13 +65,13 @@ export function Input({
     autoFocus = false,
     placeholder = '',
     className = '',
-    min = undefined,
-    max = undefined,
-    maxLength = undefined,
-    onShowPreview = null,
-    errorMessage = null,
+    min,
+    max,
+    maxLength,
+    onShowPreview,
+    errorMessage,
     appearance = DefaultInputAppearance
-} : BoilerplateInputProp) {
+} : BoilerplateInputProps) {
 
     const isNotEmpty = value?.length != 0 || value == null;
     const [focused, setFocused] = useState(isNotEmpty ? true : false);
@@ -91,8 +94,8 @@ export function Input({
     }, [errorMessage])
 
     return (
-        <div className="w-full">
-            <div className={`relative w-full cursor-text mt-[0.6rem] border rounded-lg outline-none dark:bg-stone-900 ${className}`} tabIndex={1}
+        <div className={`${twMerge('w-full', className)}`}>
+            <div className={`relative w-full cursor-text mt-[0.6rem] border rounded-lg outline-none dark:bg-stone-900`} tabIndex={1}
                 onBlur={(event) => {
                     event.preventDefault();
                     if (!isNotEmpty)
