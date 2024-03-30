@@ -6,7 +6,7 @@ import { OptionSelect } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof OptionSelect> = {
-  title: "Components/Option-Select",
+  title: "components/Option Select",
   component: OptionSelect,
   id: 'option-select'
 };
@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof OptionSelect>;
 
 export const FirstStory: Story = {
-  name: 'Option Select',
+  name: 'option-select',
   args: {
     //👇 The args you need here will depend on your component
   },

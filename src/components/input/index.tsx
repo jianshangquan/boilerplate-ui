@@ -7,18 +7,18 @@ import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
 
 
-export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputElement>{
-  value?: any,
-  type?: HTMLInputTypeAttribute,
-  placeholder?: string,
-  min?: number,
-  max?: number,
-  maxLength?: number,
-  onShowPreview?: ((value: any) => string) | null,
-  errorMessage?: string,
-  autoFocus?: boolean,
-  className?: string,
-  appearance?: BoilerplateInputAppearance | null
+export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputElement> {
+    value?: any,
+    type?: HTMLInputTypeAttribute,
+    placeholder?: string,
+    min?: number,
+    max?: number,
+    maxLength?: number,
+    onShowPreview?: ((value: any) => string) | null,
+    errorMessage?: string,
+    autoFocus?: boolean,
+    className?: string,
+    appearance?: BoilerplateInputAppearance | null
 }
 
 
@@ -27,7 +27,7 @@ export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputEle
 
 
 
-export interface BoilerplateInputAppearance{
+export interface BoilerplateInputAppearance {
     input: BoilerplateAppearance,
     placeholder: BoilerplateAppearance,
     message: BoilerplateAppearance,
@@ -71,7 +71,7 @@ export function Input({
     onShowPreview,
     errorMessage,
     appearance = DefaultInputAppearance
-} : BoilerplateInputProps) {
+}: BoilerplateInputProps) {
 
     const isNotEmpty = value?.length != 0 || value == null;
     const [focused, setFocused] = useState(isNotEmpty ? true : false);
@@ -91,7 +91,7 @@ export function Input({
     useEffect(() => {
         if (errorMessage != null && errorMessage?.length != 0)
             setFocused(true);
-    }, [errorMessage])
+    }, [errorMessage]);
 
     return (
         <div className={`${twMerge('w-full', className)}`}>
@@ -120,7 +120,7 @@ export function Input({
                     />
                     {type == 'password' && <div onClick={() => setInputType(t => t == 'password' ? 'text' : type)} className={`cursor-pointer transition-all duration-300 ${focused ? 'opacity-100' : 'opacity-0'}`}>
                         {
-                            inputType == 'password' ? <PreviewOpen theme="outline" size="20" strokeWidth={3}/> : <PreviewCloseOne theme="outline" size="20" strokeWidth={3}/>
+                            inputType == 'password' ? <PreviewOpen theme="outline" size="20" strokeWidth={3} /> : <PreviewCloseOne theme="outline" size="20" strokeWidth={3} />
                         }
                     </div>}
                 </div>
@@ -130,3 +130,6 @@ export function Input({
         </div>
     )
 }
+
+
+

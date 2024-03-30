@@ -6,7 +6,7 @@ import { Radio, RadioOption } from "..";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Radio> = {
-  title: "Components/Radio",
+  title: "components/Radio",
   component: Radio,
   id: 'test'
 };
@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof Radio>;
 
 export const FirstStory: Story = {
-  name: 'Radio',
+  name: 'radio',
   args: {
     //👇 The args you need here will depend on your component
   },
@@ -37,3 +37,4 @@ export const FirstStory: Story = {
     })
   }
 };
+

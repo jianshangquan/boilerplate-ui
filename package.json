@@ -67,6 +67,8 @@
   "dependencies": {
     "@icon-park/react": "^1.4.2",
     "@storybook/test": "^8.0.5",
+    "check-mm-nrc": "^1.0.10",
+    "country-codes-list": "^1.6.11",
     "framer-motion": "^11.0.24",
     "rollup-plugin-postcss": "^4.0.2",
     "tailwind-merge": "^2.2.2"

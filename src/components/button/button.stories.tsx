@@ -6,7 +6,7 @@ import { Button } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Button> = {
-  title: "Components/Button",
+  title: "components/Button",
   component: Button,
   id: 'button'
 };
@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const FirstStory: Story = {
-  name: 'Button',
+  name: 'button',
   args: {
     //👇 The args you need here will depend on your component
   },

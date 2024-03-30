@@ -1,7 +1,7 @@
 import '../../style.css'
 
 import React from 'react';
-import { Left, DoubleLeft, Right, DoubleRight } from '@icon-park/react';
+import { Left, DoubleLeft, Right, DoubleRight, CalendarThree } from '@icon-park/react';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import moment from 'moment';
@@ -85,7 +85,10 @@ export function CalendarInput({ value, autoCloseOnSelect = true, onChange, appea
 
     return (
         <div className={`relative`}>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className="rounded-md w-full px-3 py-3 border" onClick={() => setShow(show => !show)}>{value instanceof moment ? (value as moment.Moment).format(format) : moment(value, format).format(format)}</div>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className="rounded-md w-full flex gap-2 cursor-pointer items-center px-3 py-3 border" onClick={() => setShow(show => !show)}>
+                <CalendarThree theme="outline" size="20" strokeWidth={3} />
+                {value instanceof moment ? (value as moment.Moment).format(format) : moment(value, format).format(format)}
+            </div>
             <AnimatePresence>
                 {
                     show && (
