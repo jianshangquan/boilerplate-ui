@@ -11,4 +11,5 @@ export * from './switch';
 export * from './myanmar-nrc-input';
 export * from './phone-input';
 export * from './label-tab-switch';
+export * from './github-commit-history';
 // export * from './label-tab-switch';
