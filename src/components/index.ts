@@ -12,4 +12,5 @@ export * from './myanmar-nrc-input';
 export * from './phone-input';
 export * from './label-tab-switch';
 export * from './github-commit-history';
+export * from './animated-counter';
 // export * from './label-tab-switch';
