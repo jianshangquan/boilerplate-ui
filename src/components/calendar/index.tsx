@@ -420,7 +420,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                                                 const hour = Number(target.value);
                                                 const isTwelveHour = timeFormat == CalendarInputTimeFormat.TwelveHour;
                                                 const m = valueInMoment.clone();
-                                                m.set({ hour: isTwelveHour && hour > 12 ? hour - 12 : hour });
+                                                m.set({ hour: isTwelveHour? time.a == 'PM' ? hour + 12 : hour : hour  });
                                                 setTime(t => ({ ...t, hour: target.value, a: m.format('A') }));
                                                 onChange(m)
                                             }} value={time.hour} min={isTwelveHour ? 1 : 0} max={isTwelveHour ? 12 : 23}
