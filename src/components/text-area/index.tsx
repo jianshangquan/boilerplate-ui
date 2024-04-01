@@ -7,18 +7,14 @@ import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
 
 
-export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface BoilerplateTextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
     value?: any,
-    type?: HTMLInputTypeAttribute,
     placeholder?: string,
-    min?: number,
-    max?: number,
     maxLength?: number,
-    onShowPreview?: ((value: any) => string) | null,
     errorMessage?: string,
     autoFocus?: boolean,
     className?: string,
-    appearance?: BoilerplateInputAppearance | null
+    appearance?: BoilerplateTextareaAppearance | null
 }
 
 
@@ -27,8 +23,8 @@ export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputEle
 
 
 
-export interface BoilerplateInputAppearance {
-    input?: BoilerplateAppearance,
+export interface BoilerplateTextareaAppearance {
+    textarea?: BoilerplateAppearance,
     placeholder?: BoilerplateAppearance,
     message?: BoilerplateAppearance,
     preview?: BoilerplateAppearance
@@ -37,8 +33,8 @@ export interface BoilerplateInputAppearance {
 
 
 
-export const DefaultInputAppearance: BoilerplateInputAppearance = {
-    input: {
+export const DefaultTextareaAppearance: BoilerplateTextareaAppearance = {
+    textarea: {
         className: '',
         style: undefined,
     },
@@ -58,25 +54,20 @@ export const DefaultInputAppearance: BoilerplateInputAppearance = {
 
 
 
-export function Input({
+export function Textarea({
     value = '',
     onChange,
-    type = 'text',
     autoFocus = false,
     placeholder = '',
     className = '',
-    min,
-    max,
     maxLength,
-    onShowPreview,
     errorMessage,
-    appearance = DefaultInputAppearance
-}: BoilerplateInputProps) {
+    appearance = DefaultTextareaAppearance
+}: BoilerplateTextareaProps) {
 
     const isNotEmpty = value?.length != 0 || value == null;
     const [focused, setFocused] = useState(isNotEmpty ? true : false);
-    const input = useRef<HTMLInputElement | null>(null);
-    const [inputType, setInputType] = useState(type);
+    const input = useRef<HTMLTextAreaElement | null>(null);
 
     useEffect(() => {
         if (focused) input.current?.focus();
@@ -112,27 +103,18 @@ export function Input({
                     setFocused(true)
                     input.current?.select();
                 }}>
-                <div className={`absolute ${appearance?.placeholder?.className} ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[50%] translate-y-[-50%] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`}>{placeholder}</div>
+                <div className={`absolute ${appearance?.placeholder?.className} ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[0.5rem] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`}>{placeholder}</div>
                 <div className="px-2 flex items-center">
-                    <input
+                    <textarea
                         ref={input}
-                        min={min}
-                        max={max}
-                        type={inputType}
                         maxLength={maxLength}
                         value={value}
                         onChange={onChange}
-                        className={`pb-2 pt-3 outline-none rounded-lg w-full bg-transparent ${appearance?.input?.className}`}
-                    />
-                    {type == 'password' && <div onClick={() => setInputType(t => t == 'password' ? 'text' : type)} className={`cursor-pointer transition-all duration-300 ${focused ? 'opacity-100' : 'opacity-0'}`}>
-                        {
-                            inputType == 'password' ? <PreviewOpen theme="outline" size="20" strokeWidth={3} /> : <PreviewCloseOne theme="outline" size="20" strokeWidth={3} />
-                        }
-                    </div>}
+                        className={twMerge('pb-2 pt-3 outline-none rounded-lg w-full bg-transparent', appearance?.textarea?.className)}
+                    ></textarea>
                 </div>
             </div>
-            {!!errorMessage && <div className={`text-[0.8rem] ${appearance?.message?.className}`}>{errorMessage}</div>}
-            <div className={appearance?.preview?.className || ''}>{!!onShowPreview && onShowPreview(value)}</div>
+            {!!errorMessage && <div className={twMerge('text-[0.8rem]', appearance?.message?.className)}>{errorMessage}</div>}
         </div>
     )
 }
