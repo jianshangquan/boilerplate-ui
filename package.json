@@ -9,7 +9,8 @@
     "build-storybook": "storybook build",
     "prepublishOnly": "npm run build",
     "predeploy": "npm run build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static"
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "deploy-page": "npm run predeploy && npm run deploy-storybook"
   },
   "license": "MIT",
   "type": "module",
