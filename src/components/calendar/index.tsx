@@ -8,6 +8,7 @@ import moment from 'moment';
 import { Option } from './../select';
 import shortid from 'shortid';
 import { BoilerplateAppearance } from '../../types/appearance';
+import { twMerge } from 'tailwind-merge';
 
 export const CalendarInputTimeFormat = Object.freeze({
     TwentyFourHour: '24',
@@ -60,6 +61,7 @@ export interface BolierplateCalenterProps {
     className?: string | null,
     appearance?: {
         calendar?: CalendarAppearance | undefined,
+        input?: BoilerplateAppearance | undefined,
         time?: TimeAppearance | undefined
     }
 }
@@ -85,7 +87,7 @@ export function CalendarInput({ value, autoCloseOnSelect = true, onChange, appea
 
     return (
         <div className={`relative`}>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className="rounded-md w-full flex gap-2 cursor-pointer items-center px-3 py-3 border" onClick={() => setShow(show => !show)}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className={twMerge('rounded-md w-full flex gap-2 cursor-pointer items-center px-3 py-3 border', appearance?.input?.className)} onClick={() => setShow(show => !show)}>
                 <CalendarThree theme="outline" size="20" strokeWidth={3} />
                 {value instanceof moment ? (value as moment.Moment).format(format) : moment(value, format).format(format)}
             </div>
