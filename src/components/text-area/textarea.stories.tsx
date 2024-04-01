@@ -22,10 +22,11 @@ export const FirstStory: Story = {
   },
   render() {
     return React.createElement(() => {
-      const [state, setState] = useState(null);
+      const [state, setState] = useState<any>();
+      console.log(state);
       return (
         <div className="w-full h-[100vh] flex items-center justify-center flex-col">
-          <Textarea placeholder="Test place holder" appearance={{ textarea: { className: '' } }}/>
+          <Textarea value={state} onChange={({ target }) => {setState(target.value)}} placeholder="Test place holder" appearance={{ textarea: { className: '' } }}/>
         </div>
       )
     })

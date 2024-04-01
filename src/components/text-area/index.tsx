@@ -7,17 +7,18 @@ import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
 
 
-export interface BoilerplateTextareaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
+
+export interface BoilerplateTextareaProps extends Omit<React.HTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'onInput'>{
     value?: any,
     placeholder?: string,
     maxLength?: number,
     errorMessage?: string,
     autoFocus?: boolean,
     className?: string,
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
+    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     appearance?: BoilerplateTextareaAppearance | null
 }
-
-
 
 
 
@@ -75,7 +76,7 @@ export function Textarea({
 
 
     useEffect(() => {
-        if(value != null && value.length > 0) setFocused(true)
+        if (value != null && value.length > 0) setFocused(true)
     }, [value])
 
 
@@ -88,7 +89,7 @@ export function Textarea({
         if (errorMessage != null && errorMessage?.length != 0)
             setFocused(true);
     }, [errorMessage]);
-    
+
 
     return (
         <div className={`${twMerge('w-full', className)}`}>
@@ -109,7 +110,7 @@ export function Textarea({
                         ref={input}
                         maxLength={maxLength}
                         value={value}
-                        onChange={onChange}
+                        onChange={onChange as any}
                         className={twMerge('pb-2 pt-3 outline-none rounded-lg w-full bg-transparent', appearance?.textarea?.className)}
                     ></textarea>
                 </div>
