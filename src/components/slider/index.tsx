@@ -25,7 +25,7 @@ export interface Position{
     height: number
 }
 
-export function Slider({ value = 0, setValue, steps = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1], animateOnMove = true, appearance } : BoilerplateSliderProp){
+export function Slider({ value = 0, setValue, steps = [], animateOnMove = true, appearance } : BoilerplateSliderProp){
 
     const sliderEvent = useRef({ activate: false });
     const container = useRef<HTMLDivElement | null>(null);
