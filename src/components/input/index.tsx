@@ -7,7 +7,7 @@ import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
 
 
-export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface BoilerplateInputProps extends Omit<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onInput'> {
     value?: any,
     type?: HTMLInputTypeAttribute,
     placeholder?: string,
@@ -18,6 +18,8 @@ export interface BoilerplateInputProps extends React.HTMLAttributes<HTMLInputEle
     errorMessage?: string,
     autoFocus?: boolean,
     className?: string,
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
+    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     appearance?: BoilerplateInputAppearance | null
 }
 
