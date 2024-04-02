@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BoilerplateAppearance } from '../../types/appearance';
 
 
@@ -20,7 +20,7 @@ export interface BoilerplateSwitchProps {
 }
 
 
-export function Swtich({ value = false, disabled = false, appearance, onChanged, label = null }: BoilerplateSwitchProps) {
+export function Switch({ value = false, disabled = false, appearance, onChanged, label = null }: BoilerplateSwitchProps) {
 
 
     if (label) {

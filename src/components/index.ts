@@ -8,6 +8,7 @@ export * from "./select";
 export * from "./radio";
 export * from "./checkbox";
 export * from './switch';
+export * from './divider';
 export * from './myanmar-nrc-input';
 export * from './phone-input';
 export * from './label-tab-switch';
