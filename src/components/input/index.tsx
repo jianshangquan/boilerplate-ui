@@ -75,7 +75,7 @@ export function Input({
     appearance = DefaultInputAppearance
 }: BoilerplateInputProps) {
 
-    const isNotEmpty = value?.length != 0 || value == null;
+    const isNotEmpty = value?.length > 0 || value == null;
     const [focused, setFocused] = useState(isNotEmpty ? true : false);
     const input = useRef<HTMLInputElement | null>(null);
     const [inputType, setInputType] = useState(type);

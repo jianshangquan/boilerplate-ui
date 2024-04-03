@@ -58,6 +58,25 @@ export function Slider({ value = 0, onChange, steps = [], sticking = true, anima
         onMouseDown={() => sliderEvent.current.activate = true}
         onMouseUp={() => sliderEvent.current.activate = false}
         onMouseLeave={() => sliderEvent.current.activate = false}
+        onTouchStart={() => sliderEvent.current.activate = true}
+        onTouchCancel={() => sliderEvent.current.activate = false}
+        onTouchEnd={() => sliderEvent.current.activate = false}
+        onTouchMove={(event) => {
+            if(!sliderEvent.current.activate && !sliderEvent.current.clicked) return;
+            const bound = container.current?.getBoundingClientRect() || { top: 0, left: 0, width: 0, height: 0 };
+            const x = event.changedTouches[0].clientX - bound.left;
+            const y = event.changedTouches[0].clientY - bound.top;
+            const width = bound.width;
+            const height = bound.height;
+            onMove({ 
+                x: x < 0 ? 0 : x > width ? width : x, 
+                y: y < 0 ? 0 : y > width ? height : y, 
+                left: bound.left, 
+                top: bound.top,
+                width,
+                height
+            });
+        }}
         onMouseMove={(event) => {
             if(!sliderEvent.current.activate && !sliderEvent.current.clicked) return;
             const bound = container.current?.getBoundingClientRect() || { top: 0, left: 0, width: 0, height: 0 };
