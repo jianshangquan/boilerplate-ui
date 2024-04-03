@@ -82,7 +82,7 @@ export function Input({
 
     useEffect(() => {
         if (focused) input.current?.focus();
-    }, [focused, value])
+    }, [focused])
 
 
     useEffect(() => {

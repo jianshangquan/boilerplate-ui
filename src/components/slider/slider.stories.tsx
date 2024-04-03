@@ -28,7 +28,7 @@ export const FirstStory: Story = {
         <div className="w-full h-[100vh] flex items-center justify-center">
           <div className="w-[50%] flex flex-col gap-1">
             <Input value={value} onChange={({ target }) => setValue(Number(target.value))} placeholder="Value" type="number"/>
-            <Slider value={value} setValue={setValue}/>
+            <Slider value={value} onChange={setValue} steps={[0, 0.2, 0.4, 0.6, 0.8, 1]}/>
             <div className="flex gap-1 items-center">
               <span>{'Animated counter : '}</span>
               <AnimatedCounter value={value * 100}/>
