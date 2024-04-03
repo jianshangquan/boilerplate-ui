@@ -188,7 +188,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
     const [time, setTime] = useState<{ hour: number | string, minute: number | string, second: number | string, a: 'AM' | 'PM' | string }>((() => {
         const hour = valueInMoment.hour();
         return {
-            hour: timeFormat == CalendarInputTimeFormat.TwelveHour ? hour < 12 ? hour + 12 : hour - 12 : hour,
+            hour: timeFormat == CalendarInputTimeFormat.TwelveHour ? hour < 12 ? hour : hour - 12 : hour,
             minute: valueInMoment.minute(),
             second: valueInMoment.second(),
             a: valueInMoment.hour() > 12 ? 'PM' : 'AM'
@@ -328,17 +328,17 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
 
     return (
         <LayoutGroup key={id}>
-            <div key={'calendar-page'} className={`aspect-square w-[20rem] flex flex-col gap-3 p-3 z-50 ${appearance?.modal?.className}`}>
+            <div key={'calendar-page'} className={twMerge(`aspect-square w-[20rem] flex flex-col gap-3 p-3 z-50`, appearance?.modal?.className)}>
                 <div className="flex items-center justify-between">
                     <div className='flex items-center gap-2'>
                         <div className="font-bold text-[1.4rem]">{calculatedData.current.currentDate.format('MMM').toUpperCase()}</div>
                         <div className='font-bold text-[1.4rem]'>{calculatedData.current.year}</div>
                     </div>
                     <div className='flex gap-2'>
-                        <button className={`${appearance?.controlButton?.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canPrevYear} onClick={prevYear}><DoubleLeft theme="outline" size="20" /></button>
-                        <button className={`${appearance?.controlButton?.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canPrev} onClick={prevMonth}><Left theme="outline" size="20" /></button>
-                        <button className={`${appearance?.controlButton?.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canNext} onClick={nextMonth}><Right theme="outline" size="20" /></button>
-                        <button className={`${appearance?.controlButton?.className || 'border-black dark:border-white'} border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed`} disabled={!calculatedData.canNextYear} onClick={nextYear}><DoubleRight theme="outline" size="20" /></button>
+                        <button className={ twMerge('border-black dark:border-white border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed', appearance?.controlButton?.className)} disabled={!calculatedData.canPrevYear} onClick={prevYear}><DoubleLeft theme="outline" size="20" /></button>
+                        <button className={ twMerge('border-black dark:border-white border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed', appearance?.controlButton?.className)} disabled={!calculatedData.canPrev} onClick={prevMonth}><Left theme="outline" size="20" /></button>
+                        <button className={ twMerge('border-black dark:border-white border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed', appearance?.controlButton?.className)} disabled={!calculatedData.canNext} onClick={nextMonth}><Right theme="outline" size="20" /></button>
+                        <button className={ twMerge('border-black dark:border-white border rounded-full p-1 aspect-square flex items-center justify-center cursor-pointer transition-all duration-200 disabled:opacity-10 disabled:cursor-not-allowed', appearance?.controlButton?.className)} disabled={!calculatedData.canNextYear} onClick={nextYear}><DoubleRight theme="outline" size="20" /></button>
                     </div>
                 </div>
                 <div className="grid grid-cols-7 w-full gap-1">
@@ -361,7 +361,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
 
                                 days.push(
-                                    <button key={`${i}-${calculatedData.prev.month}-${calculatedData.prev.year}`} disabled={!isBetweenDate} className={`${appearance?.day?.className} cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.prev.month}-${calculatedData.prev.year}`} disabled={!isBetweenDate} className={twMerge(`cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`, appearance?.day?.className)} onClick={() => onPick(date)}>
                                         {day}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -375,7 +375,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                                 const isSelectedDate = isSelected(formattedDate);
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
                                 days.push(
-                                    <button key={`${i}-${calculatedData.current.month}-${calculatedData.current.year}`} disabled={!isBetweenDate} className={`${appearance?.day?.className} cursor-pointer relative flex items-center justify-center w-full disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.current.month}-${calculatedData.current.year}`} disabled={!isBetweenDate} className={twMerge(`cursor-pointer relative flex items-center justify-center w-full disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`, appearance?.day?.className)} onClick={() => onPick(date)}>
                                         {i}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -391,7 +391,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                                 const isBetweenDate = date.isSameOrAfter(calculatedData.minDate) && date.isSameOrBefore(calculatedData.maxDate);
 
                                 days.push(
-                                    <button key={`${i}-${calculatedData.next.month}-${calculatedData.next.year}`} disabled={!isBetweenDate} className={`${appearance?.day?.className} cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`} onClick={() => onPick(date)}>
+                                    <button key={`${i}-${calculatedData.next.month}-${calculatedData.next.year}`} disabled={!isBetweenDate} className={twMerge(`cursor-pointer relative flex items-center justify-center w-full opacity-40 disabled:opacity-10 disabled:cursor-not-allowed aspect-square hover:border rounded-full ${isTodayDate && 'bg-red-500 text-white'}`, appearance?.day?.className)} onClick={() => onPick(date)}>
                                         {i}
                                         {isSelectedDate && <motion.div key={formattedDate} layoutId='calendar-circle' className='absolute w-full h-full'><div className='w-full h-full border-[2px] border-black dark:border-white rounded-full scale-[1.2]'></div></motion.div>}
                                     </button>
@@ -403,8 +403,8 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                 </div>
                 <div className='flex items-center justify-between w-full overflow-hidden'>
                     <div className='flex gap-2'>
-                        <div onClick={toToday} className={`${appearance?.todayButton?.className || 'text-white bg-red-600'} bg-primary w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`}>Today</div>
-                        {includeTime && <div onClick={toCurrent} className={`${appearance?.todayButton?.className || 'text-white bg-red-600'} bg-primary w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`}>Current</div>}
+                        <div onClick={toToday} className={twMerge(`text-white bg-red-600 w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`, appearance?.todayButton?.className)}>Today</div>
+                        {includeTime && <div onClick={toCurrent} className={twMerge(`text-white bg-red-600 w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]`, appearance?.todayButton?.className)}>Current</div>}
                         <div onClick={() => setView(value)} className="border w-max px-2 py-1 rounded-full cursor-pointer text-[0.8rem]">Selected date</div>
                     </div>
                 </div>
@@ -422,7 +422,7 @@ function CalendarPickForm({ value, id, onChange, min, max, includeTime, appearan
                                                 const hour = Number(target.value);
                                                 const isTwelveHour = timeFormat == CalendarInputTimeFormat.TwelveHour;
                                                 const m = valueInMoment.clone();
-                                                m.set({ hour: isTwelveHour? time.a == 'PM' ? hour + 12 : hour : hour  });
+                                                m.set({ hour: isTwelveHour? time.a == 'PM' ? hour + 12 : hour - 12 : hour  });
                                                 setTime(t => ({ ...t, hour: target.value, a: m.format('A') }));
                                                 onChange(m)
                                             }} value={time.hour} min={isTwelveHour ? 1 : 0} max={isTwelveHour ? 12 : 23}

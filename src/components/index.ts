@@ -16,4 +16,5 @@ export * from './github-commit-history';
 export * from './animated-counter';
 export * from './text-area';
 export * from './slider';
+export * from './text-button';
 // export * from './label-tab-switch';

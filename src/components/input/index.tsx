@@ -114,7 +114,7 @@ export function Input({
                     setFocused(true)
                     input.current?.select();
                 }}>
-                <div className={`absolute ${appearance?.placeholder?.className} ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[50%] translate-y-[-50%] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`}>{placeholder}</div>
+                <div className={twMerge(`absolute ${focused ? 'top-[0] translate-y-[-50%] max-w-[calc(100%-1rem)] left-[0.5rem] px-2 text-[0.8rem]' : 'top-[50%] translate-y-[-50%] max-w-[calc(100%-2rem)] left-[1rem] opacity-50 px-0 text-[0.9rem]'} bg-white dark:bg-stone-900 transition-all duration-200 font-light block text-ellipsis overflow-hidden whitespace-nowrap`, appearance?.placeholder?.className)}>{placeholder}</div>
                 <div className="px-2 flex items-center">
                     <input
                         ref={input}
@@ -124,7 +124,7 @@ export function Input({
                         maxLength={maxLength}
                         value={value}
                         onChange={onChange}
-                        className={`pb-2 pt-3 outline-none rounded-lg w-full bg-transparent ${appearance?.input?.className}`}
+                        className={twMerge(`pb-2 pt-3 outline-none rounded-lg w-full bg-transparent`, appearance?.input?.className)}
                     />
                     {type == 'password' && <div onClick={() => setInputType(t => t == 'password' ? 'text' : type)} className={`cursor-pointer transition-all duration-300 ${focused ? 'opacity-100' : 'opacity-0'}`}>
                         {
@@ -133,8 +133,8 @@ export function Input({
                     </div>}
                 </div>
             </div>
-            {!!errorMessage && <div className={`text-[0.8rem] ${appearance?.message?.className}`}>{errorMessage}</div>}
-            <div className={appearance?.preview?.className || ''}>{!!onShowPreview && onShowPreview(value)}</div>
+            {!!errorMessage && <div className={twMerge(`text-[0.8rem]`, appearance?.message?.className)}>{errorMessage}</div>}
+            <div className={appearance?.preview?.className}>{!!onShowPreview && onShowPreview(value)}</div>
         </div>
     )
 }

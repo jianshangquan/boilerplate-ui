@@ -1,6 +1,7 @@
 import '../../style.css'
 import React from 'react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+import { twMerge } from 'tailwind-merge';
 
 interface BoilerplateSelectProps extends Omit<React.HTMLAttributes<HTMLSelectElement>, 'className'>{
     value: any,
@@ -20,7 +21,7 @@ interface BoilerplateOptionProps extends Omit<React.HTMLAttributes<HTMLOptionEle
 
 export function Select({ children, value, onChange, className = '', appearance } : BoilerplateSelectProps){
     return (
-        <select value={value} onChange={onChange} className={`border rounded-lg outline-none p-3 dark:bg-stone-900 ${className || appearance?.className}`}>
+        <select value={value} onChange={onChange} className={twMerge(`border rounded-lg outline-none p-3 dark:bg-stone-900`, `${className || appearance?.className}`)}>
             {children}
         </select>
     )

@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Check } from '@icon-park/react';
 import shortid from 'shortid';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+import { twMerge } from 'tailwind-merge';
 
 
 export const OptionModelAlign = Object.freeze({
@@ -75,11 +76,11 @@ export function OptionSelect({
 
 
     return (
-        <div className={`relative ${apperance?.outerContainer.className || className}`}>
+        <div className={twMerge(`relative`, apperance?.outerContainer.className || className)}>
             <AnimatePresence>
-                { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`${apperance?.placeholder.className} w-full h-full fixed top-0 left-0 z-50`}></motion.div>}
+                { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={twMerge(`w-full h-full fixed top-0 left-0 z-50`, apperance?.placeholder.className)}></motion.div>}
             </AnimatePresence>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={`${apperance?.inputContainer.className} border rounded-md max-h-[10rem] cursor-pointer p-1`}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={twMerge(`border rounded-md max-h-[10rem] cursor-pointer p-1`, apperance?.inputContainer.className)}>
                 <LayoutGroup id={id.current}>
                     <AnimatePresence>
                         {
@@ -90,12 +91,12 @@ export function OptionSelect({
                         {
                             multiples ? (items.filter(item => selectedItem.includes(item.value))).map((item, index) => {
                                 return (
-                                    <motion.span layoutId={item.value} key={item.value} className={`py-[0.1rem] px-2 ${apperance?.label.className || ' bg-primary/20 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item.label}</motion.span>
+                                    <motion.span layoutId={item.value} key={item.value} className={twMerge(`py-[0.1rem] px-2 bg-primary/20 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block`, apperance?.label.className)}>{item.label}</motion.span>
                                 )
                             }) : selectedItem != null ? 
                                 (() => {
                                     const item = items.find(i => i.value == selectedItem);
-                                    return <motion.span key={item?.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={`py-[0.1rem] px-2 ${apperance?.label.className || 'bg-primary/20 bg-gray-100 dark:bg-stone-700'} rounded-md mx-1 my-1 inline-block`}>{item?.label}</motion.span>
+                                    return <motion.span key={item?.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={twMerge(`py-[0.1rem] px-2 bg-primary/20 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block`, apperance?.label.className)}>{item?.label}</motion.span>
                                 })() :
                                 null
                         }
@@ -124,7 +125,7 @@ export function OptionSelect({
                                     maxHeight: `${isOverHalf ? topMaxHeight : bottomMaxHeight}px`
                                 }
                             })()}
-                            className={`${apperance?.modal.className || 'bg-white dark:bg-stone-600'} fixed ${(() => {;
+                            className={twMerge(`bg-white dark:bg-stone-600 fixed ${(() => {;
                                 const isOverHalf = bound.top > window.innerHeight / 2;
                                 if(modalAlign == OptionModelAlign.CENTER)
                                     return isOverHalf ? 'origin-bottom' : 'origin-top';
@@ -132,7 +133,7 @@ export function OptionSelect({
                                     return isOverHalf ? 'origin-bottom-left' : 'origin-top-left';
                                 if(modalAlign == OptionModelAlign.RIGHT)
                                     return  isOverHalf ? 'origin-bottom-right' : 'origin-top-right'
-                            })()} p-2 w-full select-none rounded-md shadow-xl shadow-black/10 outline-none z-50 overflow-y-auto overscroll-contain`}
+                            })()} p-2 w-full select-none rounded-md shadow-xl shadow-black/10 outline-none z-50 overflow-y-auto overscroll-contain`, apperance?.modal.className)}
                             tabIndex={1}>
                             {
                                 (showAllTypes && multiples) && (

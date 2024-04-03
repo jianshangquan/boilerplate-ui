@@ -2,6 +2,7 @@ import React from 'react';
 import { useContext, createContext, cloneElement } from 'react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import './../../style.css'
+import { twMerge } from 'tailwind-merge';
 
 
 
@@ -65,7 +66,7 @@ export function Radio<T>({ children, className, appearance, onChanged, label = n
         <div className="flex flex-col gap-2">
             {label && <div className={appearance?.label?.className || ''}>{label}</div>}
             <RadioContext.Provider value={{ ...func, index: 0, value }}>
-                <div className={`flex ${className || appearance?.container?.className}`}>
+                <div className={twMerge('flex', className || appearance?.container?.className)}>
                     {(() => {
                         if (children == null) return null;
 
@@ -98,11 +99,11 @@ export function RadioOption<T>({ label, value, index, disabled = false, appearan
  
     return (
         <div className={`inline-flex items-center gap-2 ${disabled ? 'grayscale opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onSelect(index!, value)}>
-            <div className={`rounded-full border-[0.13rem] ${appearance?.outerRadio} border-primary p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`}>
-                <div className={`rounded-full ${appearance?.innerRadio || 'bg-primary'} w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`}></div>
+            <div className={twMerge(`rounded-full border-[0.13rem] border-primary p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`, appearance?.outerRadio?.className)}>
+                <div className={twMerge(`rounded-full bg-primary w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`, appearance?.innerRadio?.className )}></div>
             </div>
             {
-                label ? <div className={`font-light text-[0.9rem] ${className || appearance?.label}`}>{label}</div> : children
+                label ? <div className={twMerge(`font-light text-[0.9rem]`, `${className || appearance?.label}`)}>{label}</div> : children
             }
         </div>
     )

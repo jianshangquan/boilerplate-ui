@@ -22,7 +22,7 @@ export const FirstStory: Story = {
   },
   render() {
     return React.createElement(() => {
-      const [value, setValue] = useState<any>(moment());
+      const [value, setValue] = useState<any>(moment().format('YYYY-MM-DD hh:mm:ss A'));
       return (
         <div className="w-full h-[100vh] flex gap-2 items-center justify-center">
           <CalendarInput value={value} onChange={(selected: string, formatted: string) => setValue(formatted)} appearance={{ calendar: { modal: { className: 'bg-white' } } }}/>

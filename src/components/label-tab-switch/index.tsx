@@ -1,6 +1,7 @@
 import { LayoutGroup, motion } from 'framer-motion';
 import shortid from 'shortid';
 import React, { useState, useEffect } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 
 
@@ -22,7 +23,7 @@ export function LabelTabSwitch<T>({ items = [], uid = shortid(), onChange, index
                 {
                     items.map((item: any, i: number) => {
                         return (
-                            <div key={i} onClick={() => onChange?.(i, items[i])} className={`${className} relative flex justify-center items-center cursor-pointer transition-all duration-300 ${ index == i ? 'text-primary font-bold' : 'font-normal text-black/50 dark:text-white/50' }`}>
+                            <div key={i} onClick={() => onChange?.(i, items[i])} className={twMerge(`relative flex justify-center items-center cursor-pointer transition-all duration-300 ${ index == i ? 'text-primary font-bold' : 'font-normal text-black/50 dark:text-white/50' }`, className)}>
                                 {index == i && <motion.div layout layoutId={`label-tab-switch`} className="w-full h-full bg-white dark:bg-stone-200 absolute z-[0] shadow rounded-lg"></motion.div>}
                                 <div className="z-[1]">{item}</div>
                             </div>
