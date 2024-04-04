@@ -123,6 +123,7 @@ export function Input({
                         type={inputType}
                         maxLength={maxLength}
                         value={value}
+                        disabled={disabled}
                         onChange={onChange}
                         className={twMerge(`pb-2 pt-3 outline-none rounded-lg w-full bg-transparent`, appearance?.input?.className)}
                     />
