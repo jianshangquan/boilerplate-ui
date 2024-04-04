@@ -7,6 +7,7 @@ import { Check } from '@icon-park/react';
 import shortid from 'shortid';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge';
+import { DisabledStyle } from '../common';
 
 
 export const OptionModelAlign = Object.freeze({
@@ -29,6 +30,7 @@ export interface BoilerplateOptionSelectProps {
     className?: ClassName,
     modalAlign?: 'center' | 'left' | 'right',
     placeholder?: string,
+    disabled?: boolean,
     apperance?: {
         outerContainer: BoilerplateAppearance,
         modal: BoilerplateAppearance,
@@ -57,6 +59,7 @@ export function OptionSelect({
     className,
     modalAlign = OptionModelAlign.CENTER,
     placeholder = ' ',
+    disabled = false,
     apperance
 } : BoilerplateOptionSelectProps) {
 
@@ -73,14 +76,18 @@ export function OptionSelect({
         setBound(inputDiv.current?.getBoundingClientRect())
     }, [show]);
 
+    useEffect(() => {
+        if(disabled) setShow(false);
+    }, [disabled])
+
 
 
     return (
-        <div className={twMerge(`relative`, apperance?.outerContainer.className || className)}>
+        <div className={twMerge(`relative`, disabled ? DisabledStyle : '', apperance?.outerContainer.className || className)}>
             <AnimatePresence>
                 { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={twMerge(`w-full h-full fixed top-0 left-0 z-50`, apperance?.placeholder.className)}></motion.div>}
             </AnimatePresence>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={twMerge(`border rounded-md max-h-[10rem] cursor-pointer p-1`, apperance?.inputContainer.className)}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={twMerge(`border rounded-md max-h-[10rem] p-1`, disabled ? '!cursor-not-allowed' : 'cursor-pointer' , apperance?.inputContainer.className)}>
                 <LayoutGroup id={id.current}>
                     <AnimatePresence>
                         {
@@ -105,7 +112,7 @@ export function OptionSelect({
             </div>
             <AnimatePresence>
                 {
-                    show && (
+                    show && !disabled && (
                         <motion.div
                             ref={ref as React.RefObject<HTMLDivElement>}
                             initial={{ scale: 0 }}

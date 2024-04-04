@@ -26,7 +26,9 @@ export const FirstStory: Story = {
         <div className="w-full h-[100vh] flex items-center justify-center">
           <div className="flex gap-10 flex-col items-center justify-center">
             <Switch value={value} onChanged={(value) => setValue(value)} />
+            <Switch value={value} disabled={true} onChanged={(value) => setValue(value)} />
             <Switch value={value} onChanged={(value) => setValue(value)} label={'allow open'} />
+            <Switch value={value} disabled={true} onChanged={(value) => setValue(value)} label={'allow open'} />
           </div>
         </div>
       )

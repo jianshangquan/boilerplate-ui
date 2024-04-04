@@ -9,6 +9,7 @@ import { Option } from './../select';
 import shortid from 'shortid';
 import { BoilerplateAppearance } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge';
+import { DisabledStyle } from '../common';
 
 export const CalendarInputTimeFormat = Object.freeze({
     TwentyFourHour: '24',
@@ -59,6 +60,7 @@ export interface BolierplateCalenterProps {
     includeTime?: boolean,
     timeFormat?: '24' | '12',
     className?: string | null,
+    disabled?: boolean,
     appearance?: {
         calendar?: CalendarAppearance | undefined,
         input?: BoilerplateAppearance | undefined,
@@ -68,7 +70,7 @@ export interface BolierplateCalenterProps {
 
 
 
-export function CalendarInput({ value, autoCloseOnSelect = true, onChange, appearance, min = DEFAULT_MIN_DATE, max = '9999-05-15', modalAlign = CalendarInputModelAlign.LEFT, includeTime = false, timeFormat = CalendarInputTimeFormat.TwelveHour, className = '' }: BolierplateCalenterProps) {
+export function CalendarInput({ value, disabled = false, autoCloseOnSelect = true, onChange, appearance, min = DEFAULT_MIN_DATE, max = '9999-05-15', modalAlign = CalendarInputModelAlign.LEFT, includeTime = false, timeFormat = CalendarInputTimeFormat.TwelveHour, className = '' }: BolierplateCalenterProps) {
 
     const ref: React.MutableRefObject<HTMLInputElement | null> = useRef<HTMLInputElement | null>(null);
     const inputDiv = useRef<HTMLDivElement | undefined>();
@@ -87,7 +89,7 @@ export function CalendarInput({ value, autoCloseOnSelect = true, onChange, appea
 
     return (
         <div className={`relative`}>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className={twMerge('rounded-md w-full flex gap-2 cursor-pointer items-center px-3 py-3 border', appearance?.input?.className)} onClick={() => setShow(show => !show)}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} className={twMerge('rounded-md w-full flex gap-2 items-center px-3 py-3 border', disabled ? DisabledStyle : 'cursor-pointer', appearance?.input?.className)} onClick={() => setShow(show => !show)}>
                 <CalendarThree theme="outline" size="20" strokeWidth={3} />
                 {value instanceof moment ? (value as moment.Moment).format(format) : moment(value, format).format(format)}
             </div>

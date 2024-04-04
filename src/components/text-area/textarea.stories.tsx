@@ -27,6 +27,7 @@ export const FirstStory: Story = {
       return (
         <div className="w-full h-[100vh] flex items-center justify-center flex-col">
           <Textarea value={state} onChange={({ target }) => {setState(target.value)}} placeholder="Test place holder" appearance={{ textarea: { className: '' } }}/>
+          <Textarea value={state} disabled={true} onChange={({ target }) => {setState(target.value)}} placeholder="Test place holder" appearance={{ textarea: { className: '' } }}/>
         </div>
       )
     })

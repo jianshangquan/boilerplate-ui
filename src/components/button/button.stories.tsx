@@ -25,6 +25,7 @@ export const FirstStory: Story = {
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
           <Button>Confirm</Button>
+          <Button disabled={true}>Confirm</Button>
           <Button loading={true}>Processing</Button>
         </div>
       )

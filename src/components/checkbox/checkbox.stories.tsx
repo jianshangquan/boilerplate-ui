@@ -25,6 +25,7 @@ export const FirstStory: Story = {
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
           <Checkbox checked={value} onChanged={(value: boolean) => setValue(value)}>jljlkj</Checkbox>
+          <Checkbox checked={value} disabled={true} onChanged={(value: boolean) => setValue(value)}>jljlkj</Checkbox>
         </div>
       )
     })

@@ -28,8 +28,9 @@ export const FirstStory: Story = {
         type: 'N'
       });
       return (
-        <div className="w-full h-[100vh] flex items-center justify-center">
+        <div className="w-full h-[100vh] flex flex-col items-center justify-center">
           <MyanmarNRCInput value={value} onChange={(value) => setValue(value)}/>
+          <MyanmarNRCInput value={value} disabled={true} onChange={(value) => setValue(value)}/>
         </div>
       )
     })

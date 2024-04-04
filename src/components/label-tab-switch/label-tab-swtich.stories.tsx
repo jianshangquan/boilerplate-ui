@@ -24,7 +24,7 @@ export const FirstStory: Story = {
       const [index, setIndex] = useState<number>(1);
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
-          <LabelTabSwitch index={index} onChange={(index) => setIndex(index)} items={['Tab 1', 'Tab 2', 'Tab 3']}/>
+          <LabelTabSwitch index={index} onChange={(index) => setIndex(index)} items={[{ label: 'Tab 1' }, { label: 'Tab 2' }, { label: 'Tab 3', disabled: true }]}/>
         </div>
       )
     })

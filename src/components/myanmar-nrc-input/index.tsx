@@ -1,5 +1,7 @@
 import React from 'react';
 import { getStates, getNRCTownshipByState, MyanmarCitizenShortType } from 'check-mm-nrc';
+import { twMerge } from 'tailwind-merge';
+import { DisabledStyle } from '../common';
 
 
 const states = getStates();
@@ -15,6 +17,7 @@ export interface BoilerplateMyanmarNRCInputValueProps {
 
 export interface BoilerplateMyanmarNRCInputProps {
     value?: BoilerplateMyanmarNRCInputValueProps,
+    disabled?: boolean,
     onChange?: (value: BoilerplateMyanmarNRCInputValueProps) => void,
     onPreview?: (value: BoilerplateMyanmarNRCInputValueProps) => string
 }
@@ -22,11 +25,11 @@ export interface BoilerplateMyanmarNRCInputProps {
 
 
 
-export function MyanmarNRCInput({ value, onChange, onPreview }: BoilerplateMyanmarNRCInputProps) {
+export function MyanmarNRCInput({ value, disabled = false, onChange, onPreview }: BoilerplateMyanmarNRCInputProps) {
     return (
-        <div className='flex flex-col gap-1'>
+        <div className={twMerge('flex flex-col gap-1', disabled ? DisabledStyle : '')}>
             <div className='flex gap-1 items-center border rounded-lg'>
-                <select value={value?.state} className="p-2 rounded-xl w-[5rem] " onChange={({ target }) => {
+                <select disabled={disabled} value={value?.state} className="p-2 rounded-xl w-[5rem] " onChange={({ target }) => {
                     // setBooking(booking => ({
                     //     ...booking,
                     //     citizenCard: `${target.value}/${booking.mmNRC.township}(${booking.mmNRC.type})${booking.mmNRC.number}`,
@@ -45,7 +48,7 @@ export function MyanmarNRCInput({ value, onChange, onPreview }: BoilerplateMyanm
                     }
                 </select>
                 <span>{'/'}</span>
-                <select value={value?.township} className="p-2 rounded-xl w-[15rem] " onChange={({ target }) => {
+                <select disabled={disabled} value={value?.township} className="p-2 rounded-xl w-[15rem] " onChange={({ target }) => {
                     // setBooking(booking => ({
                     //     ...booking,
                     //     citizenCard: `${booking.mmNRC.state}/${target.value}(${booking.mmNRC.type})${booking.mmNRC.number}`,
@@ -63,7 +66,7 @@ export function MyanmarNRCInput({ value, onChange, onPreview }: BoilerplateMyanm
                     }
                 </select>
                 <span>{'('}</span>
-                <select value={value?.type} className="p-2 rounded-xl w-[5rem] " onChange={({ target }) => {
+                <select disabled={disabled} value={value?.type} className="p-2 rounded-xl w-[5rem] " onChange={({ target }) => {
                     // setBooking(booking => ({
                     //     ...booking,
                     //     citizenCard: `${booking.mmNRC.state}/${booking.mmNRC.township}(${target.value})${booking.mmNRC.number}`,
@@ -81,7 +84,7 @@ export function MyanmarNRCInput({ value, onChange, onPreview }: BoilerplateMyanm
                     }
                 </select>
                 <span>{')'}</span>
-                <input value={value?.number} placeholder={'123456'} type='text' inputMode='numeric' className="p-2 rounded-xl w-full " onChange={({ target }: any) => {
+                <input disabled={disabled} value={value?.number} placeholder={'123456'} type='text' inputMode='numeric' className="p-2 rounded-xl w-full " onChange={({ target }: any) => {
                     if (target.value < 0 || target.value.trim().length > 6 || isNaN(Number(target.value))) return;
                     // setBooking(booking => ({
                     //     ...booking,

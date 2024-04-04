@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "../../style.css";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Input } from "..";
 
@@ -24,7 +24,15 @@ export const FirstStory: Story = {
   },
   render() {
     return React.createElement(() => {
-      const [state, setState] = useState(null);
+      const [state, setState] = useState<any>(null);
+
+      useEffect(() => {
+        setInterval(() => {
+          console.log('interval')
+          setState('fdsa');
+        }, 1000)
+      }, [])
+
       return (
         <div className="w-full h-[100vh] flex items-center justify-center flex-col">
           <Input value={state} type="text" className="w-[20rem]" placeholder="Enter your name"/>

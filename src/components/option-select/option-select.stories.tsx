@@ -41,6 +41,24 @@ export const FirstStory: Story = {
               setValue(value);
             }}
           />
+          <OptionSelect 
+            className="w-[10rem]"
+            disabled={true}
+            items={[
+              { value: 1, label: 'label 1' },
+              { value: 2, label: 'label 2' },
+              { value: 3, label: 'label 3' },
+              { value: 4, label: 'label 4' },
+              { value: 5, label: 'label 5' },
+              { value: 6, label: 'label 5', disabled: true },
+              { value: 6, label: 'label 5', disabled: true },
+            ]}
+            selectedItem={value}
+            multiples={false}
+            setSelectedItem={(value) => {
+              setValue(value);
+            }}
+          />
         </div>
       )
     })

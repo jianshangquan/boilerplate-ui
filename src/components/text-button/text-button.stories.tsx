@@ -6,7 +6,7 @@ import { TextButton } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof TextButton> = {
-  title: "components/Text Button",
+  title: "components/Button/text button",
   component: TextButton,
   id: 'text-button'
 };
@@ -24,7 +24,7 @@ export const FirstStory: Story = {
       const [value, setValue] = useState(1);
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
-            <TextButton>Hello</TextButton>
+            <TextButton disabled={true}>Hello</TextButton>
         </div>
       )
     })

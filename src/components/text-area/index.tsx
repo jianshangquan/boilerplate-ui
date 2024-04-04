@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { PreviewOpen, PreviewCloseOne } from '@icon-park/react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
+import { DisabledStyle } from '../common';
 
 
 
@@ -15,6 +16,7 @@ export interface BoilerplateTextareaProps extends Omit<React.HTMLAttributes<HTML
     errorMessage?: string,
     autoFocus?: boolean,
     className?: string,
+    disabled?: boolean,
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     appearance?: BoilerplateTextareaAppearance | null
@@ -63,12 +65,14 @@ export function Textarea({
     className = '',
     maxLength,
     errorMessage,
+    disabled = false,
     appearance = DefaultTextareaAppearance
 }: BoilerplateTextareaProps) {
 
     const isNotEmpty = value?.length != 0 || value == null;
-    const [focused, setFocused] = useState(isNotEmpty ? true : false);
+    const [focused, setFocused] = useState(isNotEmpty || disabled ? true : false);
     const input = useRef<HTMLTextAreaElement | null>(null);
+
 
     useEffect(() => {
         if (focused) input.current?.focus();
@@ -92,8 +96,8 @@ export function Textarea({
 
 
     return (
-        <div className={`${twMerge('w-full', className)}`}>
-            <div className={`relative w-full cursor-text mt-[0.6rem] border rounded-lg outline-none dark:bg-stone-900`} tabIndex={1}
+        <div className={`${twMerge(`w-full ${disabled && DisabledStyle}`, className)}`}>
+            <div className={`relative w-full ${disabled ? '!cursor-not-allowed' : 'cursor-text'} mt-[0.6rem] border rounded-lg outline-none dark:bg-stone-900`} tabIndex={1}
                 onBlur={(event) => {
                     event.preventDefault();
                     if (!isNotEmpty)
@@ -110,8 +114,9 @@ export function Textarea({
                         ref={input}
                         maxLength={maxLength}
                         value={value}
-                        onChange={onChange as any}
-                        className={twMerge('pb-2 pt-3 outline-none rounded-lg w-full bg-transparent', appearance?.textarea?.className)}
+                        disabled={disabled}
+                        onChange={(event) => !disabled && (onChange as any)(event)}
+                        className={twMerge('pb-2 pt-3 outline-none rounded-lg w-full bg-transparent disabled:!cursor-not-allowed ', appearance?.textarea?.className)}
                     ></textarea>
                 </div>
             </div>

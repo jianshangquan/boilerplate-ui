@@ -25,6 +25,7 @@ export const FirstStory: Story = {
       const [value, setValue] = useState<any>(moment().format('YYYY-MM-DD hh:mm:ss A'));
       return (
         <div className="w-full h-[100vh] flex gap-2 items-center justify-center">
+          <CalendarInput value={value} disabled={true} onChange={(selected: string, formatted: string) => setValue(formatted)} appearance={{ calendar: { modal: { className: 'bg-white' } } }}/>
           <CalendarInput value={value} onChange={(selected: string, formatted: string) => setValue(formatted)} appearance={{ calendar: { modal: { className: 'bg-white' } } }}/>
           <CalendarInput value={value} onChange={(selected: string, formatted: string) => setValue(formatted)} autoCloseOnSelect={false} appearance={{ calendar: { modal: { className: 'bg-white' } } }} includeTime={true}/>
           <CalendarInput value={value} onChange={(selected: string, formatted: string) => setValue(formatted)} appearance={{ calendar: { modal: { className: 'bg-white' } } }} includeTime={true} timeFormat='24'/>

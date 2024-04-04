@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { PreviewOpen, PreviewCloseOne } from '@icon-park/react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
+import { DisabledStyle } from '../common';
 
 
 export interface BoilerplateInputProps extends Omit<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onInput'> {
@@ -18,6 +19,7 @@ export interface BoilerplateInputProps extends Omit<React.HTMLAttributes<HTMLInp
     errorMessage?: string,
     autoFocus?: boolean,
     className?: string,
+    disabled?: boolean,
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void | any,
     appearance?: BoilerplateInputAppearance | null
@@ -67,6 +69,7 @@ export function Input({
     autoFocus = false,
     placeholder = '',
     className = '',
+    disabled = false,
     min,
     max,
     maxLength,
@@ -75,18 +78,15 @@ export function Input({
     appearance = DefaultInputAppearance
 }: BoilerplateInputProps) {
 
-    const isNotEmpty = value?.length > 0 || value == null;
+    const isNotEmpty = value?.length > 0 || value != null || value != undefined;
     const [focused, setFocused] = useState(isNotEmpty ? true : false);
     const input = useRef<HTMLInputElement | null>(null);
     const [inputType, setInputType] = useState(type);
 
-    useEffect(() => {
-        if (focused) input.current?.focus();
-    }, [focused])
 
 
     useEffect(() => {
-        if(value != null && value.length > 0) setFocused(true)
+        if(value != null || value != undefined || value?.length > 0) setFocused(true)
     }, [value])
 
 
@@ -102,7 +102,7 @@ export function Input({
     
 
     return (
-        <div className={`${twMerge('w-full', className)}`}>
+        <div className={`${twMerge('w-full', disabled ? DisabledStyle : '', className)}`} onClick={() => input.current?.focus()}>
             <div className={`relative w-full cursor-text mt-[0.6rem] border rounded-lg outline-none dark:bg-stone-900`} tabIndex={1}
                 onBlur={(event) => {
                     event.preventDefault();

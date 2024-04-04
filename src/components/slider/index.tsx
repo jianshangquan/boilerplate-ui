@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { BoilerplateAppearance } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge';
+import { DisabledStyle } from '../common';
 
 
 export interface BoilerplateSliderProp{
@@ -8,7 +9,8 @@ export interface BoilerplateSliderProp{
     onChange?: React.Dispatch<React.SetStateAction<number>>,
     steps?: number[],
     animateOnMove?: boolean,
-    sticking?: boolean
+    sticking?: boolean,
+    disabled?: boolean,
     appearance?: {
         button?: BoilerplateAppearance,
         container?: BoilerplateAppearance,
@@ -27,7 +29,7 @@ export interface Position{
     height: number
 }
 
-export function Slider({ value = 0, onChange, steps = [], sticking = true, animateOnMove = true, appearance } : BoilerplateSliderProp){
+export function Slider({ value = 0, onChange, steps = [], disabled = false, sticking = true, animateOnMove = true, appearance } : BoilerplateSliderProp){
 
     const sliderEvent = useRef({ activate: false, clicked: false });
     const container = useRef<HTMLDivElement | null>(null);
@@ -36,6 +38,7 @@ export function Slider({ value = 0, onChange, steps = [], sticking = true, anima
 
 
     const onMove = (prop : Position) => {
+        if(disabled) return;
         const x = prop.x / prop.width;
         let position: number = x;
         if(preparedSteps.length > 0 && sticking){
@@ -54,7 +57,7 @@ export function Slider({ value = 0, onChange, steps = [], sticking = true, anima
     return(
         <div 
         style={appearance?.container?.style}
-        className={twMerge('w-full h-[2rem] flex items-center justify-center relative' , appearance?.container?.className)}
+        className={twMerge(`w-full h-[2rem] flex items-center justify-center relative ${disabled && DisabledStyle}` , appearance?.container?.className)}
         onMouseDown={() => sliderEvent.current.activate = true}
         onMouseUp={() => sliderEvent.current.activate = false}
         onMouseLeave={() => sliderEvent.current.activate = false}
@@ -116,8 +119,8 @@ export function Slider({ value = 0, onChange, steps = [], sticking = true, anima
                     return <div key={index} style={{ ...appearance?.steps?.style, left: `${step * 100}%` }} className={`${twMerge('absolute top-[50%] translate-y-[-50%] translate-x-[-50%] w-[0.8rem] h-[0.8rem] border-[1px] md:w-[1rem] md:h-[1rem] md:border-[2px] bg-gray-50 dark:bg-primary dark:border-[#a3a3a3] rounded-full', appearance?.steps?.className)}`}></div>
                 })
             }
-            <div ref={button} style={{ left: `${(value > 1 ? 1 : value < 0 ? 0 : value) * 100}%` }} className={`absolute top-[50%] translate-y-[-50%] translate-x-[-50%] group ${(steps.length > 0 && animateOnMove && sticking) ? 'transition-all duration-300' : ''}`}>
-                <div style={appearance?.button?.style} className={`${twMerge('cursor-pointer w-[1.2rem] h-[1.2rem] md:w-[1.5rem] md:h-[1.5rem] shadow-lg group-hover:scale-[1.1] transition-all duration-300 bg-white dark:bg-primary border-[2px] dark:border-white border-primary rounded-full', appearance?.button?.className)}`}></div>
+            <div ref={button} style={{ left: `${(value > 1 ? 1 : value < 0 ? 0 : value) * 100}%` }} className={`absolute top-[50%] translate-y-[-50%] translate-x-[-50%] group ${(steps.length > 0 && animateOnMove && sticking && disabled) ? 'transition-all duration-300' : ''}`}>
+                <div style={appearance?.button?.style} className={`${twMerge(` w-[1.2rem] h-[1.2rem] md:w-[1.5rem] md:h-[1.5rem] shadow-lg  transition-all duration-300 bg-white ${disabled ? '!cursor-not-allowed' : 'cursor-pointer group-hover:scale-[1.1]'} dark:bg-primary border-[2px] dark:border-white border-primary rounded-full`, appearance?.button?.className)}`}></div>
             </div>
         </div>
     )

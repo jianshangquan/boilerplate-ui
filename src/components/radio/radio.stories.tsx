@@ -25,7 +25,7 @@ export const FirstStory: Story = {
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
           <Radio value={value} onChanged={(index, value) => setValue(value)} className="gap-3">
-            <RadioOption value={1} label={'Option 1'}/>
+            <RadioOption value={1} label={'Option 1'} disabled={true}/>
             <RadioOption value={2} label={'Option 2'}/>
           </Radio>
         </div>

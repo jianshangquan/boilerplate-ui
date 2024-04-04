@@ -25,6 +25,7 @@ export const FirstStory: Story = {
       return (
         <div className="w-full h-[100vh] flex items-center justify-center">
           <PhoneInput value={value} onChange={(value) => setValue(value)} appearance={{ className: 'w-[30rem]' }}/>
+          <PhoneInput value={value} disabled={true} onChange={(value) => setValue(value)} appearance={{ className: 'w-[30rem]' }}/>
         </div>
       )
     })

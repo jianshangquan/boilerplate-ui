@@ -3,6 +3,7 @@ import { useContext, createContext, cloneElement } from 'react';
 import { BoilerplateAppearance, ClassName } from '../../types/appearance';
 import './../../style.css'
 import { twMerge } from 'tailwind-merge';
+import { DisabledStyle } from '../common';
 
 
 
@@ -98,7 +99,7 @@ export function RadioOption<T>({ label, value, index, disabled = false, appearan
     }
  
     return (
-        <div className={`inline-flex items-center gap-2 ${disabled ? 'grayscale opacity-50 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => onSelect(index!, value)}>
+        <div className={`inline-flex items-center gap-2 ${disabled ? DisabledStyle : 'cursor-pointer'}`} onClick={() => onSelect(index!, value)}>
             <div className={twMerge(`rounded-full border-[0.13rem] border-primary p-[0.13rem] w-[1.1rem] h-[1.1rem] flex justify-center items-center`, appearance?.outerRadio?.className)}>
                 <div className={twMerge(`rounded-full bg-primary w-full h-full transition-all duration-500 ${value == context.value ? 'scale-100' : 'scale-0'}`, appearance?.innerRadio?.className )}></div>
             </div>
