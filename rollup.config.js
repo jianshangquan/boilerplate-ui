@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 import tailwindcss from 'tailwindcss';
+import { preserveDirectives } from 'rollup-plugin-preserve-directives';
 
 //NEW
 import terser from '@rollup/plugin-terser'
@@ -20,9 +21,11 @@ export default [
         file: packageJson.main,
         format: 'esm',
         sourcemap: true,
+        banner: `"use client"`
       },
     ],
     plugins: [
+      
       // NEW
       typescript(),
       peerDepsExternal(),
@@ -47,11 +50,15 @@ export default [
         ],
       }),
 
+      preserveDirectives(),
+
       resolve(),
       commonjs(),
 
       // NEW
-      terser(),
+      // terser({
+      //   compress: { directives: false },
+      // }),
     ],
   },
   {

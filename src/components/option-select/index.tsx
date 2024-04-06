@@ -20,7 +20,7 @@ export const OptionModelAlign = Object.freeze({
 
 
 export interface BoilerplateOptionSelectProps {
-    items: {label: any, value: any, disabled?: boolean}[],
+    items: { label: any, value: any, disabled?: boolean }[],
     selectedItem: any[] | any,
     setSelectedItem: (value: any) => void,
     showAllTypes?: boolean,
@@ -61,7 +61,7 @@ export function OptionSelect({
     placeholder = ' ',
     disabled = false,
     apperance
-} : BoilerplateOptionSelectProps) {
+}: BoilerplateOptionSelectProps) {
 
     const id = useRef<string>(shortid());
     const ref = useRef<HTMLInputElement | undefined>();
@@ -77,17 +77,27 @@ export function OptionSelect({
     }, [show]);
 
     useEffect(() => {
-        if(disabled) setShow(false);
+        if (disabled) setShow(false);
     }, [disabled])
 
+
+
+    if (typeof window === undefined)
+        return <div ref={inputDiv as any}>
+            {
+                items.map((item, index) => {
+                    return <div key={`${item.value}-${index}`}>{item.label}</div>
+                })
+            }
+        </div>
 
 
     return (
         <div className={twMerge(`relative`, disabled ? DisabledStyle : '', apperance?.outerContainer.className || className)}>
             <AnimatePresence>
-                { show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={twMerge(`w-full h-full fixed top-0 left-0 z-50`, apperance?.placeholder.className)}></motion.div>}
+                {show && <motion.div onClick={() => setShow(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={twMerge(`w-full h-full fixed top-0 left-0 z-50`, apperance?.placeholder.className)}></motion.div>}
             </AnimatePresence>
-            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={twMerge(`border rounded-md max-h-[10rem] p-1`, disabled ? '!cursor-not-allowed' : 'cursor-pointer' , apperance?.inputContainer.className)}>
+            <div ref={inputDiv as React.RefObject<HTMLDivElement>} onClick={() => setShow(sh => !sh)} className={twMerge(`border rounded-md max-h-[10rem] p-1`, disabled ? '!cursor-not-allowed' : 'cursor-pointer', apperance?.inputContainer.className)}>
                 <LayoutGroup id={id.current}>
                     <AnimatePresence>
                         {
@@ -100,7 +110,7 @@ export function OptionSelect({
                                 return (
                                     <motion.span layoutId={item.value} key={item.value} className={twMerge(`py-[0.1rem] px-2 bg-primary/20 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block`, apperance?.label.className)}>{item.label}</motion.span>
                                 )
-                            }) : selectedItem != null ? 
+                            }) : selectedItem != null ?
                                 (() => {
                                     const item = items.find(i => i.value == selectedItem);
                                     return <motion.span key={item?.value} initial={{ translateX: '1rem' }} animate={{ translateX: '0rem' }} className={twMerge(`py-[0.1rem] px-2 bg-primary/20 bg-gray-100 dark:bg-stone-700 rounded-md mx-1 my-1 inline-block`, apperance?.label.className)}>{item?.label}</motion.span>
@@ -122,7 +132,7 @@ export function OptionSelect({
                             style={(() => {
                                 const input = inputDiv.current;
                                 const bottomMaxHeight = window.innerHeight - bound.top - bound.height;
-                                const topMaxHeight = window.innerHeight - (window.innerHeight -  bound.top);
+                                const topMaxHeight = window.innerHeight - (window.innerHeight - bound.top);
                                 const isOverHalf = bound.top > window.innerHeight / 2;
                                 return {
                                     top: `${isOverHalf ? topMaxHeight : bound.top + bound.height}px`,
@@ -132,25 +142,26 @@ export function OptionSelect({
                                     maxHeight: `${isOverHalf ? topMaxHeight : bottomMaxHeight}px`
                                 }
                             })()}
-                            className={twMerge(`bg-white dark:bg-stone-600 fixed ${(() => {;
+                            className={twMerge(`bg-white dark:bg-stone-600 fixed ${(() => {
+                                ;
                                 const isOverHalf = bound.top > window.innerHeight / 2;
-                                if(modalAlign == OptionModelAlign.CENTER)
+                                if (modalAlign == OptionModelAlign.CENTER)
                                     return isOverHalf ? 'origin-bottom' : 'origin-top';
-                                if(modalAlign == OptionModelAlign.LEFT)
+                                if (modalAlign == OptionModelAlign.LEFT)
                                     return isOverHalf ? 'origin-bottom-left' : 'origin-top-left';
-                                if(modalAlign == OptionModelAlign.RIGHT)
-                                    return  isOverHalf ? 'origin-bottom-right' : 'origin-top-right'
+                                if (modalAlign == OptionModelAlign.RIGHT)
+                                    return isOverHalf ? 'origin-bottom-right' : 'origin-top-right'
                             })()} p-2 w-full select-none rounded-md shadow-xl shadow-black/10 outline-none z-50 overflow-y-auto overscroll-contain`, apperance?.modal.className)}
                             tabIndex={1}>
                             {
                                 (showAllTypes && multiples) && (
                                     <div className='flex gap-2 items-center hover:bg-primary/10 dark:hover:bg-primary/20 justify-between rounded-lg py-1 px-1 cursor-pointer' onClick={() => {
-                                        if(selectedItem.length == items.filter(i => i.disabled != true).length){
+                                        if (selectedItem.length == items.filter(i => i.disabled != true).length) {
                                             setSelectedItem([]);
-                                        }else{
+                                        } else {
                                             setSelectedItem(items.filter(i => i.disabled != true).map(i => i.value))
                                         }
-                                        if(autoCloseOnSelect && autoCloseOnSelectAllType){
+                                        if (autoCloseOnSelect && autoCloseOnSelectAllType) {
                                             setShow(false)
                                         }
                                     }}>
@@ -163,20 +174,20 @@ export function OptionSelect({
                                 items.map((item, index) => {
                                     const disabled = item.disabled;
                                     const isExist = multiples ? (selectedItem as any[]).filter(i => i == item.value).length != 0 : item.value == selectedItem;
-                                    
+
                                     return (
                                         <div key={item.value} className={`flex gap-2 items-center transition-all duration-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg justify-between py-1 px-2  ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`} onClick={() => {
-                                            if(disabled) return;
+                                            if (disabled) return;
                                             if (multiples) {
-                                                if(selectedItem.includes(item.value)){
+                                                if (selectedItem.includes(item.value)) {
                                                     setSelectedItem((selectedItem as any[]).filter(i => i != item.value))
-                                                }else{
+                                                } else {
                                                     setSelectedItem([...selectedItem, item.value])
                                                 }
-                                            }else{
+                                            } else {
                                                 setSelectedItem(item.value)
                                             }
-                                            if(autoCloseOnSelect) setShow(false)
+                                            if (autoCloseOnSelect) setShow(false)
                                         }}>
                                             <div>{item.label}</div>
                                             {isExist && <Check size={20} className='text-green-500' />}

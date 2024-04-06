@@ -24,6 +24,16 @@ export interface BoilerplateCheckboxProps {
 export function Checkbox({ checked = false, disabled = false, children, onChanged, label = null, appearance }: BoilerplateCheckboxProps) {
 
 
+
+    if(typeof window === undefined)
+        return (
+            <>
+                <label>{label}</label>
+                <input type='checkbox' checked={checked}/>
+            </>
+        )
+
+
     if (label || children) {
         return (
             <div className={`flex items-center gap-2 cursor-pointer ${disabled ? 'opacity-40 !cursor-not-allowed' : 'opacity-100'}`} onClick={() => onChanged?.(!checked)}>

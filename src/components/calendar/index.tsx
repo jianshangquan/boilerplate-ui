@@ -87,6 +87,15 @@ export function CalendarInput({ value, disabled = false, autoCloseOnSelect = tru
 
 
 
+
+
+    if(typeof window === undefined)
+        return (
+            <div>{value instanceof moment ? (value as moment.Moment).format(format) : moment(value, format).format(format)}</div>
+        )
+
+
+
     return (
         <div className={`relative`}>
             <div ref={inputDiv as React.RefObject<HTMLDivElement>} className={twMerge('rounded-md w-full flex gap-2 items-center px-3 py-3 border', disabled ? DisabledStyle : 'cursor-pointer', appearance?.input?.className)} onClick={() => setShow(show => !show)}>

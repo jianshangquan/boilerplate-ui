@@ -99,6 +99,12 @@ export function Input({
         if (errorMessage != null && errorMessage?.length != 0)
             setFocused(true);
     }, [errorMessage]);
+
+
+    if(typeof window === undefined)
+        return (
+            <input type={type} value={value}/>
+        )
     
 
     return (

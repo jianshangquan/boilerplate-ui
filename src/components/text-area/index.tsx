@@ -1,9 +1,8 @@
 import '../../style.css'
 
-import React, { HTMLInputTypeAttribute } from 'react';
+import React from 'react';
 import { useEffect, useRef, useState } from "react";
-import { PreviewOpen, PreviewCloseOne } from '@icon-park/react';
-import { BoilerplateAppearance, ClassName } from '../../types/appearance';
+import { BoilerplateAppearance } from '../../types/appearance';
 import { twMerge } from 'tailwind-merge'
 import { DisabledStyle } from '../common';
 
@@ -93,6 +92,12 @@ export function Textarea({
         if (errorMessage != null && errorMessage?.length != 0)
             setFocused(true);
     }, [errorMessage]);
+
+
+
+    if(typeof window === undefined)
+        return <textarea>{value}</textarea>
+
 
 
     return (
