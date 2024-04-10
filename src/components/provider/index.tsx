@@ -3,7 +3,6 @@
 
 import React, { createContext, ReactNode } from "react";
 import { DefaultBoilerplateAppearance } from '../../types/appearance';
-import { AnimatedCounter } from "../animated-counter";
 
 
 
